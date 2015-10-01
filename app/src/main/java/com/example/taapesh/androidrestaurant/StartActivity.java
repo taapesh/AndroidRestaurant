@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 public class StartActivity extends Activity {
     // Screen and tab bar dimensions
     private static int screenWidth;
-    private static int screenHeight;
     private static float screenDensity;
 
     // Action buttons
@@ -25,7 +24,7 @@ public class StartActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launcher);
+        setContentView(R.layout.activity_start);
         screenDensity = getResources().getDisplayMetrics().density;
 
         goToLoginButton = (Button) findViewById(R.id.goToLoginButton);
@@ -50,51 +49,12 @@ public class StartActivity extends Activity {
                 startActivity(goToRegistration);
             }
         });
-
-        setupUI();
-    }
-
-    /**
-     * Get all screen dimensions and setup tab bar dimensions
-     */
-    private void setupUI() {
-        // Get screen dimensions
-        WindowManager w = getWindowManager();
-        Point size = new Point();
-        w.getDefaultDisplay().getSize(size);
-        screenWidth = size.x;
-        screenHeight = size.y;
-
-        int btnWidth = (int) (screenWidth / 2 - dpToPx(1)/2.0f);
-        int btnHeight = dpToPx(68);
-        Button loginBtn = (Button) findViewById(R.id.goToLoginButton);
-        Button registerBtn = (Button) findViewById(R.id.goToRegistrationButton);
-
-        // Set login and registration button specs
-        RelativeLayout.LayoutParams rParams = new RelativeLayout.LayoutParams(
-                btnWidth, btnHeight);
-        rParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        rParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        loginBtn.setLayoutParams(rParams);
-
-        rParams = new RelativeLayout.LayoutParams(
-                btnWidth, btnHeight);
-        rParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        rParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        registerBtn.setLayoutParams(rParams);
-    }
-
-    /**
-     * Convert dp to pixels
-     */
-    private int dpToPx(int dp) {
-        return Math.round((float)dp * screenDensity);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_launcher, menu);
+        getMenuInflater().inflate(R.menu.menu_start, menu);
         return true;
     }
 
