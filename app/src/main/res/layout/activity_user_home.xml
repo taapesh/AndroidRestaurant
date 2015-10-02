@@ -16,7 +16,8 @@
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:id="@+id/menu1">
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/profileMenu">
 
             <ImageView
                 android:id="@+id/profileIcon"
@@ -48,7 +49,8 @@
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:id="@+id/menu2">
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/paymentMenu">
 
             <ImageView
                 android:id="@+id/paymentIcon"
@@ -80,7 +82,8 @@
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:id="@+id/menu3">
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/historyMenu">
 
             <ImageView
                 android:id="@+id/historyIcon"
@@ -112,7 +115,8 @@
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:id="@+id/menu4">
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/rewardsMenu">
 
             <ImageView
                 android:id="@+id/rewardsIcon"

@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 public class AddPaymentActivity extends AppCompatActivity {
 
@@ -11,6 +13,18 @@ public class AddPaymentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_payment);
+
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
+
+        View v = actionBar.getCustomView();
+        TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
+        actionBarText.setText("Add Payment");
     }
 
     @Override

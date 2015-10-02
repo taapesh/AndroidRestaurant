@@ -59,23 +59,48 @@
         </activity>
         <activity
             android:name=".ProfileActivity"
-            android:label="@string/title_activity_profile" >
+            android:label="Profile"
+            android:parentActivityName="com.example.taapesh.androidrestaurant.UserHomeActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
         </activity>
         <activity
             android:name=".HistoryActivity"
-            android:label="@string/title_activity_history" >
+            android:label="History"
+            android:parentActivityName="com.example.taapesh.androidrestaurant.UserHomeActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
         </activity>
         <activity
             android:name=".PaymentActivity"
-            android:label="@string/title_activity_payment" >
+            android:label="Payment"
+            android:parentActivityName="com.example.taapesh.androidrestaurant.UserHomeActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
         </activity>
         <activity
             android:name=".AddPaymentActivity"
-            android:label="@string/title_activity_add_payment" >
+            android:label="Add Payment"
+            android:parentActivityName="com.example.taapesh.androidrestaurant.PaymentActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.taapesh.androidrestaurant.PaymentActivity" />
         </activity>
         <activity
             android:name=".EditProfileActivity"
-            android:label="@string/title_activity_edit_profile" >
+            android:label="Edit Profile"
+            android:parentActivityName="com.example.taapesh.androidrestaurant.ProfileActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.taapesh.androidrestaurant.ProfileActivity" />
         </activity>
     </application>
 

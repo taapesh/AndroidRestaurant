@@ -1,9 +1,12 @@
 package com.example.taapesh.androidrestaurant;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -11,6 +14,22 @@ public class PaymentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setCustomView(R.layout.payment_action_bar);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
+
+        View addPaymentArea = findViewById(R.id.addPaymentArea);
+        addPaymentArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToAddPayment = new Intent(PaymentActivity.this, AddPaymentActivity.class);
+                startActivity(goToAddPayment);
+            }
+        });
     }
 
     @Override

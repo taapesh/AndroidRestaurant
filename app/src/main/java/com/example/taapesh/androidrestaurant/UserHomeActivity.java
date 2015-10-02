@@ -1,5 +1,6 @@
 package com.example.taapesh.androidrestaurant;
 
+import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,7 @@ public class UserHomeActivity extends AppCompatActivity {
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setCustomView(R.layout.user_home_action_bar);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowHomeEnabled(false);
@@ -32,6 +33,34 @@ public class UserHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 toggleDrawer();
+            }
+        });
+
+        // Setup menu click events
+        View profileMenu = findViewById(R.id.profileMenu);
+        profileMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToProfile = new Intent(UserHomeActivity.this, ProfileActivity.class);
+                startActivity(goToProfile);
+            }
+        });
+
+        View paymentMenu = findViewById(R.id.paymentMenu);
+        paymentMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToPayment = new Intent(UserHomeActivity.this, PaymentActivity.class);
+                startActivity(goToPayment);
+            }
+        });
+
+        View historyMenu = findViewById(R.id.historyMenu);
+        historyMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToHistory = new Intent(UserHomeActivity.this, HistoryActivity.class);
+                startActivity(goToHistory);
             }
         });
     }
