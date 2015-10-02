@@ -16,4 +16,6 @@
     <string name="title_activity_payment">PaymentActivity</string>
     <string name="title_activity_add_payment">AddPaymentActivity</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="title_activity_join_table">JoinTableActivity</string>
+    <string name="title_activity_find_table">FindTableActivity</string>
 </resources>

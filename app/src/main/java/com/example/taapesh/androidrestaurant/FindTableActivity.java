@@ -7,12 +7,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class EatingActivity extends AppCompatActivity {
+public class FindTableActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_table);
+        setContentView(R.layout.activity_find_table);
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -24,16 +24,13 @@ public class EatingActivity extends AppCompatActivity {
 
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText("Dining");
-
-        /* Instantiate PubNub */
-        //Pubnub pubnub = new Pubnub("Your Publish Key Here", "Your Subscribe Key Here");
+        actionBarText.setText("Start Table");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_table, menu);
+        getMenuInflater().inflate(R.menu.menu_find_table, menu);
         return true;
     }
 

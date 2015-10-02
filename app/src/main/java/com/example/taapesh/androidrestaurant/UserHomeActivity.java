@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 public class UserHomeActivity extends AppCompatActivity {
     private static DrawerLayout mDrawerLayout;
@@ -61,6 +62,25 @@ public class UserHomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent goToHistory = new Intent(UserHomeActivity.this, HistoryActivity.class);
                 startActivity(goToHistory);
+            }
+        });
+
+        // Main action buttons
+        final Button startTableButton = (Button) findViewById(R.id.startTableButton);
+        startTableButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToFindTable = new Intent(UserHomeActivity.this, FindTableActivity.class);
+                startActivity(goToFindTable);
+            }
+        });
+
+        Button joinTableButton = (Button) findViewById(R.id.joinTableButton);
+        joinTableButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToJoinTable = new Intent(UserHomeActivity.this, JoinTableActivity.class);
+                startActivity(goToJoinTable);
             }
         });
     }

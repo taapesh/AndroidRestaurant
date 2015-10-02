@@ -50,6 +50,12 @@ public class ProfileActivity extends AppCompatActivity {
             case R.id.editProfileMenu:
                 Intent goToEditProfile = new Intent(ProfileActivity.this, EditProfileActivity.class);
                 startActivity(goToEditProfile);
+                break;
+            case R.id.signOutMenu:
+                // Log the user out and go to start activity
+                Intent goToStart = new Intent(ProfileActivity.this, StartActivity.class);
+                startActivity(goToStart);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
