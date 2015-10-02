@@ -19,10 +19,6 @@
         </activity>
 
         <activity
-            android:name=".UserRegistrationActivity"
-            android:label="@string/title_activity_user_registration" >
-        </activity>
-        <activity
             android:name=".UserHomeActivity"
             android:label="UserHomeActivity" >
         </activity>
@@ -36,8 +32,23 @@
         </activity>
         <activity
             android:name=".UserLoginActivity"
-            android:label="@string/title_activity_user_login" >
+            android:label="Sign In"
+            android:parentActivityName="com.example.taapesh.androidrestaurant.StartActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.taapesh.androidrestaurant.StartActivity" />
         </activity>
+        <activity
+            android:name=".UserRegistrationActivity"
+            android:label="Register"
+            android:parentActivityName="com.example.taapesh.androidrestaurant.StartActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.taapesh.androidrestaurant.StartActivity" />
+        </activity>
+
         <activity
             android:name=".ServingActivity"
             android:label="@string/title_activity_serving" >
