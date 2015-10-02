@@ -36,8 +36,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
                 return true;
         }
 
-
-
         return super.onOptionsItemSelected(item);
     }
 }
