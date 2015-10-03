@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.TextView;
 
 public class FindTableActivity extends AppCompatActivity {
-
     private static String[] sampleServers = {"Bob", "Alice", "John"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,7 @@ public class FindTableActivity extends AppCompatActivity {
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
         actionBarText.setText("Start Table");
+
 
     }
 
