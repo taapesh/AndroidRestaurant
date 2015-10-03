@@ -2,12 +2,18 @@ package com.example.taapesh.androidrestaurant;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class FindTableActivity extends AppCompatActivity {
+
+    private static String[] sampleServers = {"Bob", "Alice", "John"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +31,7 @@ public class FindTableActivity extends AppCompatActivity {
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
         actionBarText.setText("Start Table");
+
     }
 
     @Override

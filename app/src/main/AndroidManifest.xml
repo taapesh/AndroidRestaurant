@@ -39,6 +39,7 @@
         <activity
             android:name=".UserRegistrationActivity"
             android:label="Register"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".StartActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
