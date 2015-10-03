@@ -1,36 +1,77 @@
-<LinearLayout
+<ScrollView android:id="@+id/ScrollView01"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:fillViewport="true"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical|center_horizontal"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="16dp"
-    android:id="@+id/findTableRoot">
+    android:isScrollContainer="true" >
 
-    <EditText
-        android:id="@+id/serverCodeField"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Server code"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:layout_marginLeft="35dp"
-        android:layout_marginRight="35dp" />
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="16dp"
+        android:id="@+id/findTableRoot">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="OR"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"/>
+        <EditText
+            android:id="@+id/serverCodeField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Your Server's Code"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginBottom="20dp"/>
 
-    <Button
-        android:id="@+id/joinTableButton"
-        android:layout_width="135dp"
-        android:layout_height="65dp"
-        android:text="Scan Code" />
-</LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:text="Get Served!"
+            android:layout_marginRight="35dp"
+            android:layout_marginLeft="35dp"
+            android:id="@+id/startServiceButton"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OR"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"/>
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/scanCodeButton"
+            android:layout_width="135dp"
+            android:layout_height="65dp"
+            android:text="Scan Code" />
+    </LinearLayout>
+</ScrollView>

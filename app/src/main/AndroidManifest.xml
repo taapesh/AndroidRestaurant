@@ -104,6 +104,7 @@
         <activity
             android:name=".FindTableActivity"
             android:label="@string/title_activity_find_table"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
