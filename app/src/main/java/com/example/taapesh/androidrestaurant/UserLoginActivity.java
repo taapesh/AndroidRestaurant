@@ -161,8 +161,21 @@ public class UserLoginActivity extends AppCompatActivity {
 
         protected void onPostExecute(JSONObject result) {
             // TODO: do something with the result
-            // check if user was returned and if so, log the user in and go to user home page
-            // otherwise, determine the error e.g. email/phone is already in use, and display it
+            // check if access token is returned, otherwise, login credentials are invalid
+            String token = null;
+            try {
+                token = result.getString("auth_token");
+            } catch (JSONException e) {
+                // response body is not a valid JSON string
+            }
+            if (token != null) {
+                Log.i("LOGIN", "Valid login, starting home activity");
+                Intent goToUserHome = new Intent(UserLoginActivity.this, UserHomeActivity.class);
+                startActivity(goToUserHome);
+            } else {
+                // invalid login
+                Log.i("LOGIN", "Invalid credentials");
+            }
         }
     }
 }
