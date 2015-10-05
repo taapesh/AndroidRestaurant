@@ -1,10 +1,12 @@
 package com.example.taapesh.androidrestaurant;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class WaiterHomeActivity extends AppCompatActivity {
@@ -25,6 +27,15 @@ public class WaiterHomeActivity extends AppCompatActivity {
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
         actionBarText.setText("Home");
+
+        Button startServingButton = (Button) findViewById(R.id.startServingButton);
+        startServingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToServing = new Intent(WaiterHomeActivity.this, ServingActivity.class);
+                startActivity(goToServing);
+            }
+        });
     }
 
     @Override
