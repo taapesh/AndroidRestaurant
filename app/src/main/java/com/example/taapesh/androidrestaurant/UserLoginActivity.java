@@ -6,10 +6,12 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,22 +19,25 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.Scanner;
+import java.net.URLEncoder;
 
 
 public class UserLoginActivity extends AppCompatActivity {
-
+    private static final String LOGIN_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/login/";
     private static final int CONNECTION_TIMEOUT = 7;
     private static final int DATARETRIEVAL_TIMEOUT = 7;
+
+    private static EditText loginEmailField;
+    private static EditText loginPasswordField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,27 +56,27 @@ public class UserLoginActivity extends AppCompatActivity {
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
         actionBarText.setText("Sign In");
 
+        loginEmailField = (EditText) findViewById(R.id.loginEmailField);
+        loginPasswordField = (EditText) findViewById(R.id.loginPasswordField);
+
         Button signInButton = (Button) findViewById(R.id.signInButton);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 Intent goToUserHome = new Intent(UserLoginActivity.this, UserHomeActivity.class);
                 startActivity(goToUserHome);
+                */
+                // TODO: validate input data before making HTTP request
+                String email = loginEmailField.getText().toString();
+                String password = loginPasswordField.getText().toString();
+                new LoginInBackground().execute(email, password);
             }
         });
 
         String htmlString = "<u>Forgot Password?</u>";
         TextView mTextView = (TextView) findViewById(R.id.forgotPasswordText);
         mTextView.setText(Html.fromHtml(htmlString));
-
-        Button restTestButton = (Button) findViewById(R.id.restTestButton);
-        restTestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Make the restful request
-                new RequestWebService().execute("http://taapesh.pythonanywhere.com/users/");
-            }
-        });
     }
 
     @Override
@@ -96,80 +101,68 @@ public class UserLoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class RequestWebService extends AsyncTask<String, Void, JSONObject> {
-        private String _url = "";
-        String requestResult = "";
-        Exception _e = null;
+    class LoginInBackground extends AsyncTask<String, Void, JSONObject> {
 
-        protected JSONObject doInBackground(String... urls) {
-            HttpURLConnection urlConnection = null;
+        protected JSONObject doInBackground(String... fields) {
+            HttpURLConnection conn = null;
             try {
                 // create connection
-                URL url= new URL(urls[0]);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                //urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
-                //urlConnection.setReadTimeout(DATARETRIEVAL_TIMEOUT);
+                String email = fields[0];
+                String password = fields[1];
 
-                // create JSON object from content
-                BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                // Encode data
+                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
 
+                // Setup Http POST request with data
+                URL url = new URL(LOGIN_ENDPOINT);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+                conn.connect();
+
+                // Create JSON object from response content
+                InputStream is;
+                if (conn.getResponseCode() / 100 == 2) {
+                    is = conn.getInputStream();
+                } else {
+                    is = conn.getErrorStream();
+                }
+
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is));
                 StringBuilder sb = new StringBuilder();
                 String inputLine;
-                while ((inputLine = in.readLine()) != null) {
+                while ((inputLine = rd.readLine()) != null) {
                     sb.append(inputLine + "\n");
                 }
-                requestResult = sb.toString();
-                makeToast();
+                wr.close();
+                rd.close();
+                Log.i("RESULT", sb.toString());
                 return new JSONObject(sb.toString());
             } catch (MalformedURLException e) {
                 // URL is invalid
-                _e = e;
-                //makeToast();
             } catch (SocketTimeoutException e) {
                 // data retrieval or connection timed out
-                _e = e;
             } catch (IOException e) {
                 // could not read response body
                 // (could not create input stream)
-                _e = e;
             } catch (JSONException e) {
                 // response body is no valid JSON string
-                _e = e;
             } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
+                if (conn != null) {
+                    conn.disconnect();
                 }
-            }
-            if (_e != null) {
-                makeToastException();
             }
             return null;
         }
 
-        protected void onPostExecute(JSONObject serviceResult) {
-            // TODO: check this.exception
-            // TODO: do something with the feed
-            //makeToast(serviceResult.toString());
-        }
-
-        private void makeToastException() {
-            UserLoginActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Exception: " + _e.toString(), Toast.LENGTH_LONG);
-                    toast.show();
-                }
-            });
-        }
-
-        private void makeToast() {
-            UserLoginActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Result: " + requestResult, Toast.LENGTH_LONG);
-                    toast.show();
-                }
-            });
+        protected void onPostExecute(JSONObject result) {
+            // TODO: do something with the result
+            // check if user was returned and if so, log the user in and go to user home page
+            // otherwise, determine the error e.g. email/phone is already in use, and display it
         }
     }
 }
