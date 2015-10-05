@@ -195,6 +195,39 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"/>
 
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/switchToWaiterMenu">
+
+            <ImageView
+                android:id="@+id/waiterIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:tint="@color/oil"
+                android:src="@drawable/eat_xhdpi" />
+
+            <TextView
+                android:id="@+id/menuTitle5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="SERVER MODE"
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/waiterIcon"
+                android:layout_marginLeft="20dp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

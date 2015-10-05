@@ -65,6 +65,15 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
 
+        View serverModeMenu = findViewById(R.id.switchToWaiterMenu);
+        serverModeMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToServerHome = new Intent(UserHomeActivity.this, WaiterHomeActivity.class);
+                startActivity(goToServerHome);
+            }
+        });
+
         // Main action buttons
         final Button startTableButton = (Button) findViewById(R.id.startTableButton);
         startTableButton.setOnClickListener(new View.OnClickListener() {
