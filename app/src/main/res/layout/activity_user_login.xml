@@ -21,6 +21,12 @@
             android:layout_height="65dp"
             android:text="facebook" />
 
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="65dp"
+            android:text="waiter test"
+            android:id="@+id/waiterTestButton"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

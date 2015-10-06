@@ -13,12 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 // HTTP stuff
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,6 +69,15 @@ public class UserLoginActivity extends AppCompatActivity {
                 String email = loginEmailField.getText().toString();
                 String password = loginPasswordField.getText().toString();
                 new LoginInBackground().execute(email, password);
+            }
+        });
+
+        Button waiterTestButton = (Button) findViewById(R.id.waiterTestButton);
+        waiterTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToServing = new Intent(UserLoginActivity.this, ServingActivity.class);
+                startActivity(goToServing);
             }
         });
 
