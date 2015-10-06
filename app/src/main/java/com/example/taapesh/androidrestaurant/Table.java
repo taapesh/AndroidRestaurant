@@ -7,7 +7,7 @@ public class Table {
     private static String ownerEmail;
     private static String ownerFirstName;
     private static String ownerLastName;
-    private static int size;
+    private static int partySize;
     private static Integer timeSinceLastRequest;
     private static boolean requestMade;
     private static boolean isFinished;
@@ -17,7 +17,7 @@ public class Table {
 
     /* Table constructor */
     public Table(Integer userId, String email, String firstName, String lastName) {
-        size = 1;
+        partySize = 1;
         members.put(userId, 100);
         ownerEmail = email;
         ownerFirstName = firstName;
@@ -28,12 +28,12 @@ public class Table {
     }
 
     public int getSize() {
-        return size;
+        return partySize;
     }
 
     public void addMember(int userId, String firstName, String lastName) {
         members.put(userId, 0);
-        size += 1;
+        partySize += 1;
     }
 
     /* Update a member's percentage of the check and update other members accordingly */

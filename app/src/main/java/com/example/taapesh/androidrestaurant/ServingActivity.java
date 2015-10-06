@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pubnub.api.Pubnub;
 import com.pubnub.api.Callback;
@@ -81,7 +82,7 @@ public class ServingActivity extends AppCompatActivity {
 
     private void processMessage(JSONObject msg) {
         int typeCode = -1;
-        String type = null;
+        String type;
         try {
             type = msg.getString("type");
 
@@ -92,14 +93,22 @@ public class ServingActivity extends AppCompatActivity {
             switch (typeCode) {
                 case CONNECT:
                     // client is connecting for the first time
+                    Integer userId = new Integer(msg.getString("user_id"));
                     String firstName = msg.getString("first_name");
                     String lastName = msg.getString("last_name");
                     String email = msg.getString("email");
-                    Integer userId = new Integer(msg.getString("user_id"));
 
                     // Create new table and map it to userId
                     Table table = new Table(userId, email, firstName, lastName);
                     parties.put(userId, table);
+
+                    /* Test: request to connect was received */
+                    ServingActivity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(ServingActivity.this, "Customer connected", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    /* End test receive connection */
                     break;
                 case JOIN:
                     // another client has joined a table
