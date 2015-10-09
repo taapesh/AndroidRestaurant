@@ -1,5 +1,7 @@
 package com.example.taapesh.androidrestaurant;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
@@ -31,16 +33,29 @@ import java.net.URLEncoder;
 
 public class UserLoginActivity extends AppCompatActivity {
     private static final String LOGIN_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/login/";
+    private static final String USER_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/me/";
     private static final int CONNECTION_TIMEOUT = 7;
     private static final int DATARETRIEVAL_TIMEOUT = 7;
 
     private static EditText loginEmailField;
     private static EditText loginPasswordField;
 
+    private static SharedPreferences sharedPreferences;
+    private static final String MY_PREFERENCES = "Preferences";
+    private static final String userIdPref = "user_id";
+    private static final String firstNamePref = "first_name";
+    private static final String lastNamePref = "last_name";
+    private static final String phonePref = "phone_number";
+    private static final String emailPref = "email";
+    private static final String tokenPref = "token";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
+
+        sharedPreferences = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -108,10 +123,12 @@ public class UserLoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class LoginInBackground extends AsyncTask<String, Void, JSONObject> {
+    class LoginInBackground extends AsyncTask<String, Void, String> {
 
-        protected JSONObject doInBackground(String... fields) {
+        protected String doInBackground(String... fields) {
             HttpURLConnection conn = null;
+            HttpURLConnection loginConn = null;
+
             try {
                 // create connection
                 String email = fields[0];
@@ -147,8 +164,54 @@ public class UserLoginActivity extends AppCompatActivity {
                 }
                 wr.close();
                 rd.close();
-                Log.i("RESULT", sb.toString());
-                return new JSONObject(sb.toString());
+
+                // Process result
+                JSONObject result = new JSONObject(sb.toString());
+                String token = result.getString("auth_token");
+                if (token != null) {
+                    url = new URL(USER_ENDPOINT);
+                    loginConn = (HttpURLConnection) url.openConnection();
+                    loginConn.setRequestMethod("GET");
+                    loginConn.setRequestProperty("Authorization", "Token " + token);
+                    loginConn.connect();
+
+                    // Create JSON object from response content
+                    InputStream login_is;
+                    if (loginConn.getResponseCode() / 100 == 2) {
+                        login_is = loginConn.getInputStream();
+                    } else {
+                        login_is = loginConn.getErrorStream();
+                    }
+
+                    BufferedReader login_rd = new BufferedReader(new InputStreamReader(login_is));
+                    StringBuilder login_sb = new StringBuilder();
+                    while ((inputLine = login_rd.readLine()) != null) {
+                        login_sb.append(inputLine + "\n");
+                    }
+                    login_rd.close();
+                    Log.i("CHECKPOINT", "HERE 2");
+                    Log.i("LOGIN_RESULT", login_sb.toString());
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    JSONObject loginResult = new JSONObject(login_sb.toString());
+                    String firstName = loginResult.getString("first_name");
+                    if (firstName != null) {
+                        editor.putString(tokenPref, token);
+                        editor.putInt(userIdPref, loginResult.getInt("id"));
+                        editor.putString(firstNamePref, firstName);
+                        editor.putString(lastNamePref, loginResult.getString("last_name"));
+                        editor.putString(emailPref, loginResult.getString("email"));
+                        editor.putString(phonePref, loginResult.getString("phone_number"));
+                        editor.commit();
+
+                        return "1";
+                    } else {
+                        // call failed
+                    }
+                }
+                else {
+                    // token was null
+                }
             } catch (MalformedURLException e) {
                 // URL is invalid
             } catch (SocketTimeoutException e) {
@@ -161,27 +224,23 @@ public class UserLoginActivity extends AppCompatActivity {
             } finally {
                 if (conn != null) {
                     conn.disconnect();
+                } if (loginConn != null) {
+                    loginConn.disconnect();
                 }
             }
-            return null;
+            return "";
         }
 
-        protected void onPostExecute(JSONObject result) {
+        protected void onPostExecute(String result) {
             // TODO: do something with the result
-            // check if access token is returned, otherwise, login credentials are invalid
-            String token = null;
-            try {
-                token = result.getString("auth_token");
-            } catch (JSONException e) {
-                // response body is not a valid JSON string
-            }
-            if (token != null) {
-                Log.i("LOGIN", "Valid login, starting home activity");
+
+            if (result.equals("1")) {
                 Intent goToUserHome = new Intent(UserLoginActivity.this, UserHomeActivity.class);
                 startActivity(goToUserHome);
-            } else {
-                // invalid login
-                Log.i("LOGIN", "Invalid credentials");
+            }
+            else if (result.equals("")) {
+                // handle some error
+                Log.i("ERROR", "Something went wrong");
             }
         }
     }

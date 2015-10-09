@@ -127,6 +127,8 @@ public class ServingActivity extends AppCompatActivity {
                 case FINISHED:
                     // client is finished eating
                     // TODO: visual cues when party is finished, make necessary changes to data structures
+                    Integer finishId = new Integer(msg.getString("finish_id"));
+                    parties.get(finishId).closeTable();
                     break;
             }
         } catch (JSONException e) {
