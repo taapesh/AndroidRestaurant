@@ -24,4 +24,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile files('libs/sinch-android-rtc-3.3.5.jar')
     compile files('libs/Pubnub-Android-3.7.5.jar')
+    //Core card library
+    compile 'com.github.gabrielemariotti.cards:library:1.9.1'
 }

@@ -49,7 +49,6 @@ public class UserLoginActivity extends AppCompatActivity {
     private static final String emailPref = "email";
     private static final String tokenPref = "token";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

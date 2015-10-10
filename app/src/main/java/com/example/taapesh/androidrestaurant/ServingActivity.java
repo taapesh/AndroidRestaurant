@@ -17,8 +17,17 @@ import com.pubnub.api.PubnubException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+// Card imports
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.view.CardListView;
+import it.gmariotti.cardslib.library.view.CardView;
 
 
 public class ServingActivity extends AppCompatActivity {
@@ -35,6 +44,11 @@ public class ServingActivity extends AppCompatActivity {
     private static int numTables = 0;
     // Map userID to their table
     Map<Integer, Table> parties = new HashMap<Integer, Table>();
+
+    // Map the cardview to the user id that the view is assigned,
+    // If not assigned, then that cardview is free to be used
+    Map<CardView, Integer> activeTableViews = new HashMap<CardView, Integer>();
+    Map<CardView, Integer> finishedTableViews = new HashMap<CardView, Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +92,28 @@ public class ServingActivity extends AppCompatActivity {
             e.printStackTrace();
             Log.i("PUBNUB_EXCEPTION", e.toString());
         }
+
+        // Create a Card
+        Card card = new Card(this, R.layout.row_card);
+
+        // Create a CardHeader
+        CardHeader header = new CardHeader(this);
+        header.setTitle("Hello world");
+
+        card.setTitle("Simple card demo");
+        CardThumbnail thumb = new CardThumbnail(this);
+        thumb.setDrawableResource(R.drawable.user_xhdpi);
+
+        card.addCardThumbnail(thumb);
+
+        // Add Header to card
+        card.addCardHeader(header);
+
+        // Set card in the cardView
+        CardView cardView = (CardView) findViewById(R.id.activeTable1);
+        cardView.setCard(card);
     }
+
 
     private void processMessage(JSONObject msg) {
         int typeCode = -1;
@@ -93,7 +128,7 @@ public class ServingActivity extends AppCompatActivity {
             switch (typeCode) {
                 case CONNECT:
                     // client is connecting for the first time
-                    Integer userId = new Integer(msg.getString("user_id"));
+                    Integer userId = Integer.valueOf(msg.getString("user_id"));
                     String firstName = msg.getString("first_name");
                     String lastName = msg.getString("last_name");
                     String email = msg.getString("email");
@@ -101,6 +136,7 @@ public class ServingActivity extends AppCompatActivity {
                     // Create new table and map it to userId
                     Table table = new Table(userId, email, firstName, lastName);
                     parties.put(userId, table);
+                    displayTables();
 
                     /* Test: request to connect was received */
                     ServingActivity.this.runOnUiThread(new Runnable() {
@@ -112,22 +148,22 @@ public class ServingActivity extends AppCompatActivity {
                     break;
                 case JOIN:
                     // another client has joined a table
-                    Integer joiningId = new Integer(msg.getString("join_id"));
-                    Integer ownerId = new Integer(msg.getString("owner_id"));
+                    Integer joiningId = Integer.valueOf(msg.getString("join_id"));
+                    Integer ownerId = Integer.valueOf(msg.getString("owner_id"));
                     String joinFirstName = msg.getString("first_name");
                     String joinLastName = msg.getString("last_name");
                     parties.get(ownerId).addMember(joiningId, joinFirstName, joinLastName);
                     break;
                 case REQUEST:
                     // a client has made a request
-                    Integer requestId = new Integer(msg.getString("request_id"));
+                    Integer requestId = Integer.valueOf(msg.getString("request_id"));
                     parties.get(requestId).makeRequest();
                     // TODO: visual cues when party makes request, modify request stack
                     break;
                 case FINISHED:
                     // client is finished eating
                     // TODO: visual cues when party is finished, make necessary changes to data structures
-                    Integer finishId = new Integer(msg.getString("finish_id"));
+                    Integer finishId = Integer.valueOf(msg.getString("finish_id"));
                     parties.get(finishId).closeTable();
                     break;
             }
@@ -156,5 +192,14 @@ public class ServingActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void displayTables() {
+        for(Map.Entry<Integer, Table> tableEntry : parties.entrySet()) {
+            Table t = tableEntry.getValue();
+            Log.i("TABLE", t.getOwnerFirstName() + " : " + t.getSize());
+
+
+        }
     }
 }

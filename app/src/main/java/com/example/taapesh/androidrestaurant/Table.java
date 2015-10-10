@@ -8,8 +8,8 @@ public class Table {
     private static String ownerFirstName;
     private static String ownerLastName;
     private static int partySize;
-    private static Integer timeSinceLastRequest;
     private static boolean requestMade;
+    private static long timeOfRequest;
     private static boolean isFinished;
 
     // Map members at table to their percentage of the check, initially 0
@@ -24,7 +24,7 @@ public class Table {
         ownerLastName = lastName;
         requestMade = false;
         isFinished = false;
-        timeSinceLastRequest = 0;
+        timeOfRequest = -1;
     }
 
     public int getSize() {
@@ -44,10 +44,38 @@ public class Table {
     /* Request was made by this table */
     public void makeRequest() {
         requestMade = true;
+        timeOfRequest = System.currentTimeMillis();
+    }
+
+    public void serveRequest() {
+        requestMade = false;
+        timeOfRequest = -1;
     }
 
     /* Table is finished eating now, set flag to prepare for payment */
     public void closeTable() {
         isFinished = true;
+    }
+
+    public String getOwnerFirstName() {
+        return ownerFirstName;
+    }
+
+    public String getOwnerLastName() {
+        return ownerLastName;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public boolean getRequestStatus() {
+        return requestMade;
+    }
+
+    public long getTimeSinceRequest() {
+        long timeNow = System.currentTimeMillis();
+        long secondsElapsed = (timeNow - timeOfRequest)/1000;
+        return secondsElapsed;
     }
 }
