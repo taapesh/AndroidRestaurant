@@ -2,10 +2,13 @@ package com.example.taapesh.androidrestaurant;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,19 +21,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-// Card imports
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
-import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.internal.CardThumbnail;
-import it.gmariotti.cardslib.library.view.CardListView;
-import it.gmariotti.cardslib.library.view.CardView;
+import java.util.Iterator;
 
 
-public class ServingActivity extends AppCompatActivity {
+public class ServingActivity extends AppCompatActivity
+{
     private static Pubnub pubnub;
     private static final String PUBLISH_KEY = "pub-c-2344ebc7-3daf-4ffd-8c58-a8f809e85a2e";
     private static final String SUBSCRIBE_KEY = "sub-c-01429274-6938-11e5-a5be-02ee2ddab7fe";
@@ -41,20 +36,27 @@ public class ServingActivity extends AppCompatActivity {
     private static final int REQUEST = 3;
     private static final int FINISHED = 4;
 
-    private static int numTables = 0;
-    // Map userID to their table
-    Map<Integer, Table> parties = new HashMap<Integer, Table>();
+    // Max allotted tables
+    private final int MAX_TABLES = 3;
 
-    // Map the cardview to the user id that the view is assigned,
-    // If not assigned, then that cardview is free to be used
-    Map<CardView, Integer> activeTableViews = new HashMap<CardView, Integer>();
-    Map<CardView, Integer> finishedTableViews = new HashMap<CardView, Integer>();
+    ArrayList<Table> activeTableStack = new ArrayList<>();
+    ArrayList<Table> requestTableStack = new ArrayList<>();
+    ArrayList<Table> finishedTableStack = new ArrayList<>();
+
+    // Table card views and availability
+    CardView[] activeTableCardViews = new CardView[MAX_TABLES];
+    CardView[] finishedTableCardViews = new CardView[MAX_TABLES];
+    boolean[] isActiveTableViewUsed = new boolean[MAX_TABLES];
+    boolean[] isFinishedTableViewUsed = new boolean[MAX_TABLES];
+
+    private static LinearLayout activeTablesRoot;
+    private static LinearLayout finishedTablesRoot;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serving);
-
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -62,144 +64,335 @@ public class ServingActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowHomeEnabled(false);
-
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
         actionBarText.setText("Serving");
 
+        activeTablesRoot = (LinearLayout) findViewById(R.id.activeTablesRoot);
+        finishedTablesRoot = (LinearLayout) findViewById(R.id.finishedTablesRoot);
+
+        for(int i = 0; i < MAX_TABLES; ++i)
+        {
+            activeTableCardViews[i] = (CardView) activeTablesRoot.getChildAt(i);
+            finishedTableCardViews[i] = (CardView) finishedTablesRoot.getChildAt(i);
+            finishedTableCardViews[i].setVisibility(View.GONE);
+            activeTableCardViews[i].setVisibility(View.GONE);
+        }
+
         // Initialize Pubnub
         pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);
-        /* Waiter connects to own channel, a combination of his email and other characters */
-        try {
-            // Test waiter: woodhouse
-            pubnub.subscribe("woodhouse", new Callback() {
-                public void successCallback(String channel, Object message) {
-                    Log.i("PUBNUB_MESSAGE", channel + ": " + message.toString());
+        try
+        {
+            // Waiter subscribes to own channel
+            pubnub.subscribe("woodhouse", new Callback()
+            {
+                public void successCallback(String channel, Object message)
+                {
                     JSONObject msg;
-                    try {
+                    try
+                    {
                         msg = new JSONObject(message.toString());
                         processMessage(msg);
-                    } catch (JSONException e) {
+                    }
+                    catch (JSONException e)
+                    {
                         // pass
                     }
                 }
 
-                public void errorCallback(String channel, PubnubError error) {
-                    Log.i("PUBNUB_ERROR", error.getErrorString());
+                public void errorCallback(String channel, PubnubError error)
+                {
+                    // Handle PubNub message error
                 }
             });
-        } catch (PubnubException e) {
-            e.printStackTrace();
-            Log.i("PUBNUB_EXCEPTION", e.toString());
         }
-
-        // Create a Card
-        Card card = new Card(this, R.layout.row_card);
-
-        // Create a CardHeader
-        CardHeader header = new CardHeader(this);
-        header.setTitle("Hello world");
-
-        card.setTitle("Simple card demo");
-        CardThumbnail thumb = new CardThumbnail(this);
-        thumb.setDrawableResource(R.drawable.user_xhdpi);
-
-        card.addCardThumbnail(thumb);
-
-        // Add Header to card
-        card.addCardHeader(header);
-
-        // Set card in the cardView
-        CardView cardView = (CardView) findViewById(R.id.activeTable1);
-        cardView.setCard(card);
+        catch (PubnubException e)
+        {
+            // Handle PubNub initialization error
+        }
     }
 
-
-    private void processMessage(JSONObject msg) {
+    // Process the received PubNub message
+    private void processMessage(JSONObject msg)
+    {
         int typeCode = -1;
         String type;
-        try {
+        try
+        {
             type = msg.getString("type");
 
-            if (type != null) {
+            if (type != null)
                 typeCode = Integer.parseInt(type);
-                Log.i("TYPE", type);
-            }
-            switch (typeCode) {
+
+            switch (typeCode)
+            {
                 case CONNECT:
-                    // client is connecting for the first time
-                    Integer userId = Integer.valueOf(msg.getString("user_id"));
-                    String firstName = msg.getString("first_name");
-                    String lastName = msg.getString("last_name");
-                    String email = msg.getString("email");
-
-                    // Create new table and map it to userId
-                    Table table = new Table(userId, email, firstName, lastName);
-                    parties.put(userId, table);
-                    displayTables();
-
-                    /* Test: request to connect was received */
-                    ServingActivity.this.runOnUiThread(new Runnable() {
-                        public void run() {
-                            Toast.makeText(ServingActivity.this, "Customer connected", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    /* End test receive connection */
+                {
+                    // Customer is connecting for the first time
+                    createAndDisplayTable(msg);
                     break;
+                }
+
                 case JOIN:
-                    // another client has joined a table
-                    Integer joiningId = Integer.valueOf(msg.getString("join_id"));
-                    Integer ownerId = Integer.valueOf(msg.getString("owner_id"));
-                    String joinFirstName = msg.getString("first_name");
-                    String joinLastName = msg.getString("last_name");
-                    parties.get(ownerId).addMember(joiningId, joinFirstName, joinLastName);
+                {
+                    // Another customer has joined a table
+                    joinTable(msg);
                     break;
+                }
+
                 case REQUEST:
-                    // a client has made a request
+                {
+                    // A table has made a request
                     Integer requestId = Integer.valueOf(msg.getString("request_id"));
-                    parties.get(requestId).makeRequest();
-                    // TODO: visual cues when party makes request, modify request stack
+                    makeTableRequest(requestId);
                     break;
+                }
+
                 case FINISHED:
-                    // client is finished eating
-                    // TODO: visual cues when party is finished, make necessary changes to data structures
+                {
+                    // Table is finished eating
                     Integer finishId = Integer.valueOf(msg.getString("finish_id"));
-                    parties.get(finishId).closeTable();
+                    closeTable(finishId);
                     break;
+                }
             }
-        } catch (JSONException e) {
+        }
+        catch (JSONException e)
+        {
             // pass
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_serving, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void displayTables() {
-        for(Map.Entry<Integer, Table> tableEntry : parties.entrySet()) {
-            Table t = tableEntry.getValue();
-            Log.i("TABLE", t.getOwnerFirstName() + " : " + t.getSize());
+    // Handle a new customer connection
+    private void createAndDisplayTable(JSONObject msg)
+    {
+        try
+        {
+            Integer userId = Integer.valueOf(msg.getString("user_id"));
+            String firstName = msg.getString("first_name");
+            String lastName = msg.getString("last_name");
+            String email = msg.getString("email");
 
+            int tableViewIdx = getFirstAvailableActiveView();
+            isActiveTableViewUsed[tableViewIdx] = true;
 
+            Table table = new Table(userId, email, firstName, lastName, activeTableCardViews[tableViewIdx], tableViewIdx);
+            activeTableStack.add(table);
+
+            // Inflate views
+            runOnUiThread(new ActiveTableViewer(activeTableCardViews[tableViewIdx], table));
+        }
+        catch (JSONException e)
+        {
+            // pass
         }
     }
+
+    // Handle a table request
+    private void makeTableRequest(int id)
+    {
+        for (Iterator<Table> iterator = activeTableStack.iterator(); iterator.hasNext(); )
+        {
+            Table t = iterator.next();
+            if (t.getOwnerId() == id)
+            {
+                // Remove table from active stack and place in the request stack
+                iterator.remove();
+                requestTableStack.add(t);
+                t.makeRequest();
+                runOnUiThread(new ReorderTables());
+                break;
+            }
+        }
+    }
+
+    // Handle a finished table
+    private void closeTable(int id)
+    {
+        Table t = getTable(id);
+
+        if (t != null)
+        {
+            activeTableStack.remove(t);
+
+            finishedTableStack.add(t);
+            t.closeTable();
+
+            int tableViewIdx = getFirstAvailableFinishedView();
+            isFinishedTableViewUsed[tableViewIdx] = true;
+
+            runOnUiThread(new FinishedTableViewer(t, tableViewIdx, finishedTableCardViews[tableViewIdx]));
+        }
+    }
+
+    // Handle a table joined
+    private void joinTable(JSONObject msg)
+    {
+        try
+        {
+            Integer joiningId = Integer.valueOf(msg.getString("join_id"));
+            Integer ownerId = Integer.valueOf(msg.getString("owner_id"));
+            String joinFirstName = msg.getString("first_name");
+            String joinLastName = msg.getString("last_name");
+
+            Table t = getTable(ownerId);
+
+            if (t != null)
+                t.addMember(joiningId, joinFirstName, joinLastName);
+
+            // todo: update card view
+        }
+        catch (JSONException e)
+        {
+            // Invalid JSON format
+        }
+    }
+
+    // Display a new active table on UI
+    private class ActiveTableViewer implements Runnable
+    {
+        private final CardView cardView;
+        private final Table table;
+
+        ActiveTableViewer(CardView cardView, Table table)
+        {
+            this.cardView = cardView;
+            this.table = table;
+        }
+
+        public void run()
+        {
+            fillActiveTableView(cardView, table);
+            cardView.setVisibility(View.VISIBLE);
+
+            // Remove and add to push card to bottom of linear layout
+            activeTablesRoot.removeView(cardView);
+            activeTablesRoot.addView(cardView);
+
+            Toast.makeText(ServingActivity.this, "Customer connected", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // Display a finished table on UI
+    private class FinishedTableViewer implements Runnable
+    {
+        private final CardView cardView;
+        private final Table table;
+        private final int tableViewIdx;
+
+        FinishedTableViewer(Table table, int tableViewIdx, CardView cardView)
+        {
+            this.cardView = cardView;
+            this.table = table;
+            this.tableViewIdx = tableViewIdx;
+        }
+
+        public void run()
+        {
+            // Free up previous card slot and hide it, set new view index
+            isActiveTableViewUsed[table.getViewIdx()] = false;
+            activeTableCardViews[table.getViewIdx()].setVisibility(View.GONE);
+            table.setViewIdx(tableViewIdx);
+
+            fillFinishedTableView(cardView, table);
+            cardView.setVisibility(View.VISIBLE);
+
+            if (cardView.getParent() != null)
+                ((ViewGroup) cardView.getParent()).removeView(cardView);
+            finishedTablesRoot.addView(cardView);
+
+            Toast.makeText(ServingActivity.this, "Customer finished", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // Display active tables in correct order
+    private class ReorderTables implements Runnable
+    {
+        public void run()
+        {
+            activeTablesRoot.removeAllViews();
+
+            // Display request tables first
+            for(Table t: requestTableStack)
+            {
+                if (t.getView().getParent() != null)
+                    ((ViewGroup) t.getView().getParent()).removeView(t.getView());
+                activeTablesRoot.addView(t.getView());
+            }
+
+            for(Table t: activeTableStack)
+            {
+                if (t.getView().getParent() != null)
+                    ((ViewGroup) t.getView().getParent()).removeView(t.getView());
+                activeTablesRoot.addView(t.getView());
+            }
+        }
+    }
+
+    private int getFirstAvailableActiveView() {
+        for (int i = 0; i < MAX_TABLES; ++i)
+            if (!isActiveTableViewUsed[i]) return i;
+        return -1;
+    }
+
+    private int getFirstAvailableFinishedView()
+    {
+        for (int i = 0; i < MAX_TABLES; ++i)
+            if (!isFinishedTableViewUsed[i]) return i;
+        return -1;
+    }
+
+    private Table getTable(int id)
+    {
+        for(Table t: activeTableStack)
+            if (t.getOwnerId() == id) return t;
+
+        for(Table t: requestTableStack)
+            if(t.getOwnerId() == id) return t;
+
+        for(Table t: finishedTableStack)
+            if (t.getOwnerId() == id) return t;
+
+        return null;
+    }
+
+    // Fill active table card information
+    private void fillActiveTableView(CardView cardView, Table t)
+    {
+        TextView tv = (TextView) cardView.getChildAt(0);
+        tv.setText(t.getOwnerFirstName() + " " + t.getSize());
+    }
+
+    // Fill finished table card information
+    private void fillFinishedTableView(CardView cardView, Table t)
+    {
+        TextView tv = (TextView) cardView.getChildAt(0);
+        tv.setText(t.getOwnerFirstName() + " is finished");
+    }
 }
+
