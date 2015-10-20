@@ -30,6 +30,9 @@ public class ServingActivity extends AppCompatActivity
     private static final String PUBLISH_KEY = "pub-c-2344ebc7-3daf-4ffd-8c58-a8f809e85a2e";
     private static final String SUBSCRIBE_KEY = "sub-c-01429274-6938-11e5-a5be-02ee2ddab7fe";
 
+    // Card view components
+    private static final int CARD_TITLE = 0;
+
     // Message types
     private static final int CONNECT = 1;
     private static final int JOIN = 2;
@@ -142,7 +145,7 @@ public class ServingActivity extends AppCompatActivity
 
                 case REQUEST:
                 {
-                    // A table has made a request
+                    // Table has made a request
                     Integer requestId = Integer.valueOf(msg.getString("request_id"));
                     makeTableRequest(requestId);
                     break;
@@ -188,7 +191,6 @@ public class ServingActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    // Handle a new customer connection
     private void createAndDisplayTable(JSONObject msg)
     {
         try
@@ -213,7 +215,6 @@ public class ServingActivity extends AppCompatActivity
         }
     }
 
-    // Handle a table request
     private void makeTableRequest(int id)
     {
         for (Iterator<Table> iterator = activeTableStack.iterator(); iterator.hasNext(); )
@@ -231,7 +232,6 @@ public class ServingActivity extends AppCompatActivity
         }
     }
 
-    // Handle a finished table
     private void closeTable(int id)
     {
         Table t = getTable(id);
@@ -250,7 +250,6 @@ public class ServingActivity extends AppCompatActivity
         }
     }
 
-    // Handle a table joined
     private void joinTable(JSONObject msg)
     {
         try
@@ -384,14 +383,14 @@ public class ServingActivity extends AppCompatActivity
     // Fill active table card information
     private void fillActiveTableView(CardView cardView, Table t)
     {
-        TextView tv = (TextView) cardView.getChildAt(0);
+        TextView tv = (TextView) cardView.getChildAt(CARD_TITLE);
         tv.setText(t.getOwnerFirstName() + " " + t.getSize());
     }
 
     // Fill finished table card information
     private void fillFinishedTableView(CardView cardView, Table t)
     {
-        TextView tv = (TextView) cardView.getChildAt(0);
+        TextView tv = (TextView) cardView.getChildAt(CARD_TITLE);
         tv.setText(t.getOwnerFirstName() + " is finished");
     }
 }
