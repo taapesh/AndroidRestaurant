@@ -31,7 +31,8 @@ public class ServingActivity extends AppCompatActivity
     private static final String SUBSCRIBE_KEY = "sub-c-01429274-6938-11e5-a5be-02ee2ddab7fe";
 
     // Card view components
-    private static final int CARD_TITLE = 0;
+    private static final int PARTY_TITLE = 0;
+    private static final int PARTY_SIZE = 1;
 
     // Message types
     private static final int CONNECT = 1;
@@ -264,6 +265,8 @@ public class ServingActivity extends AppCompatActivity
             if (t != null)
                 t.addMember(joiningId, joinFirstName, joinLastName);
 
+            runOnUiThread(new IncreasePartyCount(t));
+
             // todo: update card view
         }
         catch (JSONException e)
@@ -353,6 +356,23 @@ public class ServingActivity extends AppCompatActivity
         }
     }
 
+    private class IncreasePartyCount implements Runnable
+    {
+        private final Table table;
+
+        IncreasePartyCount(Table table)
+        {
+            this.table = table;
+        }
+
+        public void run()
+        {
+            LinearLayout cardLayout = (LinearLayout) table.getView().getChildAt(0);
+            TextView partySizeText = (TextView) cardLayout.getChildAt(PARTY_SIZE);
+            partySizeText.setText(table.getPartySize() + " in party");
+        }
+    }
+
     private int getFirstAvailableActiveView() {
         for (int i = 0; i < MAX_TABLES; ++i)
             if (!isActiveTableViewUsed[i]) return i;
@@ -383,14 +403,19 @@ public class ServingActivity extends AppCompatActivity
     // Fill active table card information
     private void fillActiveTableView(CardView cardView, Table t)
     {
-        TextView tv = (TextView) cardView.getChildAt(CARD_TITLE);
-        tv.setText(t.getOwnerFirstName() + " " + t.getSize());
+        LinearLayout cardLayout = (LinearLayout) cardView.getChildAt(0);
+        TextView nameText = (TextView) cardLayout.getChildAt(PARTY_TITLE);
+        TextView partySizeText = (TextView) cardLayout.getChildAt(PARTY_SIZE);
+
+        nameText.setText(t.getOwnerFirstName());
+        partySizeText.setText(t.getPartySize() + " in party");
     }
 
     // Fill finished table card information
     private void fillFinishedTableView(CardView cardView, Table t)
     {
-        TextView tv = (TextView) cardView.getChildAt(CARD_TITLE);
+        LinearLayout cardLayout = (LinearLayout) cardView.getChildAt(0);
+        TextView tv = (TextView) cardLayout.getChildAt(PARTY_TITLE);
         tv.setText(t.getOwnerFirstName() + " is finished");
     }
 }

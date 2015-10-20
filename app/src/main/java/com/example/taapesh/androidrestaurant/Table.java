@@ -65,7 +65,7 @@ public class Table
         isFinished = true;
     }
 
-    public int getSize() {
+    public int getPartySize() {
         return partySize;
     }
 
