@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import java.util.HashMap;
 
-
 public class Table implements Parcelable
 {
     private int ownerId;
@@ -18,10 +17,9 @@ public class Table implements Parcelable
     private boolean isFinished;
     private CardView cardView;
     private int viewIdx;
-    // Map members at table to their percentage of the check, initially 0
-    private HashMap<Integer, Integer> members = new HashMap<>();
+    private HashMap<Integer, Integer> members = new HashMap<>(); // Map members to their portion of the bill
 
-    /* Table constructor */
+    // Table constructor
     public Table(Integer userId, String email, String firstName, String lastName, CardView cardView, int viewIdx)
     {
         ownerId = userId;
@@ -37,18 +35,19 @@ public class Table implements Parcelable
         this.viewIdx = viewIdx;
     }
 
+    // Add a member to this table
     public void addMember(int userId, String firstName, String lastName)
     {
         members.put(userId, 0);
         partySize += 1;
     }
 
-    /* Update a member's percentage of the check and update other members accordingly */
+    // Update a member's portion of the bill and update other members accordingly
     public void changePercentage(Integer userId, Integer percent) {
 
     }
 
-    /* Request was made by this table */
+    // Request was made by this table
     public void makeRequest()
     {
         requestMade = true;
@@ -61,7 +60,7 @@ public class Table implements Parcelable
         timeOfRequest = -1;
     }
 
-    /* Table is finished eating now, set flag to prepare for payment */
+    // Table is finished eating now, set flag to prepare for payment
     public void closeTable() {
         isFinished = true;
     }
@@ -112,7 +111,7 @@ public class Table implements Parcelable
         viewIdx = idx;
     }
 
-    /* Implementing Parcelable */
+    // Implementing Parcelable
 
     public int describeContents() {
         return 0;

@@ -1,12 +1,8 @@
 package com.example.taapesh.androidrestaurant;
 
-
-import android.content.SharedPreferences;
 import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,13 +19,10 @@ public class LoginRegisterHelper
     private static final String LOGIN_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/login/";
     private static final String USER_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/me/";
     private static final String REGISTER_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/register/";
-
     public static final int LOGIN_SUCCESS = 1;
     public static final int LOGIN_FAIL = -1;
-
     public static final int REGISTER_SUCCESS = 1;
     public static final int REGISTER_FAIL = -1;
-
     private static final int CONNECTION_TIMEOUT = 7;
     private static final int DATARETRIEVAL_TIMEOUT = 7;
 
