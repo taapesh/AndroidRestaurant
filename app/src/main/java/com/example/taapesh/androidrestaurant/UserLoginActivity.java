@@ -38,15 +38,14 @@ public class UserLoginActivity extends AppCompatActivity
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setCustomView(R.layout.custom_action_bar);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowHomeEnabled(false);
-
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText("Sign In");
+        actionBarText.setText(R.string.title_login);
 
         loginEmailField = (EditText) findViewById(R.id.loginEmailField);
         loginPasswordField = (EditText) findViewById(R.id.loginPasswordField);

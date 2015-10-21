@@ -1,7 +1,6 @@
 package com.example.taapesh.androidrestaurant;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -39,7 +38,6 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
 
-        // Setup menu click events
         View profileMenu = findViewById(R.id.profileMenu);
         profileMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +74,6 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
 
-        // Main action buttons
         final Button startTableButton = (Button) findViewById(R.id.startTableButton);
         startTableButton.setOnClickListener(new View.OnClickListener() {
             @Override

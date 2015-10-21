@@ -1,23 +1,14 @@
 package com.example.taapesh.androidrestaurant;
 
-import android.graphics.Point;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.content.Intent;
-import android.widget.RelativeLayout;
 
 public class StartActivity extends Activity {
-    // Screen and tab bar dimensions
-    private static int screenWidth;
-    private static float screenDensity;
-
-    // Action buttons
     protected Button goToLoginButton;
     protected Button goToRegistrationButton;
 
@@ -25,7 +16,6 @@ public class StartActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        screenDensity = getResources().getDisplayMetrics().density;
 
         goToLoginButton = (Button) findViewById(R.id.goToLoginButton);
         goToRegistrationButton = (Button) findViewById(R.id.goToRegistrationButton);

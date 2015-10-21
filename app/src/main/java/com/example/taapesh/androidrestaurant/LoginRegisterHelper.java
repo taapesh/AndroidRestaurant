@@ -14,8 +14,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class LoginRegisterHelper
-{
+public class LoginRegisterHelper  {
     private static final String LOGIN_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/login/";
     private static final String USER_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/me/";
     private static final String REGISTER_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/register/";
@@ -26,8 +25,7 @@ public class LoginRegisterHelper
     private static final int CONNECTION_TIMEOUT = 7;
     private static final int DATARETRIEVAL_TIMEOUT = 7;
 
-    public JSONObject tryLogin(String email, String password)
-    {
+    public JSONObject tryLogin(String email, String password) {
         HttpURLConnection getTokenConn = null;
         HttpURLConnection getUserConn = null;
 
@@ -59,15 +57,11 @@ public class LoginRegisterHelper
                 getUserConn.setRequestMethod("GET");
                 getUserConn.setRequestProperty("Authorization", "Token " + token);
                 getUserConn.connect();
-
                 JSONObject userResult = readInput(getUserConn);
-
-
                 Log.i("LoginResult", userResult.toString());
                 String firstName = userResult.getString("first_name");
 
-                if (firstName != null)
-                {
+                if (firstName != null) {
                     loginReturn.put("result", LOGIN_SUCCESS);
                     loginReturn.put("token", token);
                     loginReturn.put("firstName", userResult.getString("first_name"));
@@ -103,16 +97,18 @@ public class LoginRegisterHelper
             // response body is no valid JSON string
             _e = e;
         }
-        finally
-        {
-            if (getTokenConn != null)
+        finally {
+            if (getTokenConn != null) {
                 getTokenConn.disconnect();
+            }
 
-            if (getUserConn != null)
+            if (getUserConn != null) {
                 getUserConn.disconnect();
+            }
 
-            if (_e != null)
+            if (_e != null) {
                 Log.e("LoginException", _e.toString());
+            }
         }
 
         // If we made it here, login was unsuccessful
@@ -123,8 +119,7 @@ public class LoginRegisterHelper
         return loginReturn;
     }
 
-    public JSONObject tryRegister(String firstName, String lastName, String phoneNumber, String email, String password)
-    {
+    public JSONObject tryRegister(String firstName, String lastName, String phoneNumber, String email, String password) {
         Exception _e = null;
         HttpURLConnection registerConn = null;
         JSONObject registerReturn = new JSONObject();
@@ -151,16 +146,13 @@ public class LoginRegisterHelper
             JSONObject registerResult = readInput(registerConn);
             Log.i("RegisterResult", registerResult.toString());
 
-            if (registerResult.get("id") != null)
-            {
+            if (registerResult.get("id") != null) {
                 // Registration succeeded, get user info and obtain auth token
                 registerReturn.put("result", REGISTER_SUCCESS);
-
                 JSONObject loginResult = tryLogin(email, password);
                 int result = (int)loginResult.get("result");
 
-                if (result == LOGIN_SUCCESS)
-                {
+                if (result == LOGIN_SUCCESS) {
                     registerReturn.put("token", loginResult.getString("token"));
                     registerReturn.put("firstName", loginResult.getString("firstName"));
                     registerReturn.put("lastName", loginResult.getString("lastName"));
@@ -190,11 +182,13 @@ public class LoginRegisterHelper
             _e = e;
         }
         finally {
-            if (registerConn != null)
+            if (registerConn != null) {
                 registerConn.disconnect();
+            }
 
-            if (_e != null)
+            if (_e != null) {
                 Log.e("RegisterException", _e.toString());
+            }
         }
 
         // If we made it here, registration was unsuccessful
@@ -205,8 +199,7 @@ public class LoginRegisterHelper
         return registerReturn;
     }
 
-    private JSONObject readInput(HttpURLConnection conn) throws IOException, JSONException
-    {
+    private JSONObject readInput(HttpURLConnection conn) throws IOException, JSONException {
         // Create JSON object from response content
         InputStream is;
         if (conn.getResponseCode() / 100 == 2) {

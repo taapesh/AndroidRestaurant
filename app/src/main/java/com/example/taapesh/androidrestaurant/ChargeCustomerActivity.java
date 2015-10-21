@@ -5,10 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class ChargeCustomer extends AppCompatActivity
-{
+public class ChargeCustomerActivity extends AppCompatActivity {
     private Table table;
 
     @Override
@@ -16,11 +17,22 @@ public class ChargeCustomer extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charge_customer);
 
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
+        View v = actionBar.getCustomView();
+        TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
+        actionBarText.setText(R.string.title_charge_customer);
+
         Intent i = getIntent();
         table = (Table) i.getParcelableExtra("table");
 
         // Test get Table parcel
-        Toast.makeText(ChargeCustomer.this, "Charge for " + table.getOwnerFirstName(), Toast.LENGTH_LONG).show();
+        Toast.makeText(ChargeCustomerActivity.this, "Charge for " + table.getOwnerFirstName(), Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -21,6 +21,9 @@ public class PaymentActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowHomeEnabled(false);
+        View v = actionBar.getCustomView();
+        TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
+        actionBarText.setText(R.string.title_payment);
 
         View addPaymentArea = findViewById(R.id.addPaymentArea);
         addPaymentArea.setOnClickListener(new View.OnClickListener() {

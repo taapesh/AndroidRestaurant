@@ -22,10 +22,9 @@ public class WaiterHomeActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowHomeEnabled(false);
-
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText("Server Home");
+        actionBarText.setText(R.string.placeholder);
 
         Button startServingButton = (Button) findViewById(R.id.startServingButton);
         startServingButton.setOnClickListener(new View.OnClickListener() {

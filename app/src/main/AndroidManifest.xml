@@ -8,11 +8,12 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Restaurant App"
+        android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name=".StartActivity"
-            android:label="Restauraunt App" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,22 +23,22 @@
 
         <activity
             android:name=".UserHomeActivity"
-            android:label="UserHomeActivity" >
+            android:label="@string/placeholder" >
         </activity>
 
         <activity
             android:name=".WaiterHomeActivity"
-            android:label="@string/title_activity_waiter_home" >
+            android:label="@string/placeholder" >
         </activity>
 
         <activity
             android:name=".EatingActivity"
-            android:label="EatingActivity" >
+            android:label="@string/placeholder" >
         </activity>
 
         <activity
             android:name=".UserLoginActivity"
-            android:label="Sign In"
+            android:label="@string/placeholder"
             android:parentActivityName=".StartActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -46,7 +47,7 @@
 
         <activity
             android:name=".UserRegistrationActivity"
-            android:label="Register"
+            android:label="@string/placeholder"
             android:parentActivityName=".StartActivity"
             android:windowSoftInputMode="adjustResize" >
             <meta-data
@@ -56,7 +57,7 @@
 
         <activity
             android:name=".ServingActivity"
-            android:label="@string/title_activity_serving" >
+            android:label="@string/placeholder" >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -65,12 +66,12 @@
 
         <activity
             android:name=".TipRatingReviewActivity"
-            android:label="@string/title_activity_tip_rating_review" >
+            android:label="@string/placeholder" >
         </activity>
 
         <activity
             android:name=".ProfileActivity"
-            android:label="Profile"
+            android:label="@string/placeholder"
             android:parentActivityName=".UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -79,7 +80,7 @@
 
         <activity
             android:name=".HistoryActivity"
-            android:label="History"
+            android:label="@string/placeholder"
             android:parentActivityName=".UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -88,7 +89,7 @@
 
         <activity
             android:name=".PaymentActivity"
-            android:label="Payment"
+            android:label="@string/placeholder"
             android:parentActivityName=".UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -97,7 +98,7 @@
 
         <activity
             android:name=".AddPaymentActivity"
-            android:label="Add Payment"
+            android:label="@string/placeholder"
             android:parentActivityName=".PaymentActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -106,7 +107,7 @@
 
         <activity
             android:name=".EditProfileActivity"
-            android:label="Edit Profile"
+            android:label="@string/placeholder"
             android:parentActivityName=".ProfileActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -115,7 +116,7 @@
 
         <activity
             android:name=".JoinTableActivity"
-            android:label="@string/title_activity_join_table"
+            android:label="@string/placeholder"
             android:parentActivityName=".UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -124,7 +125,7 @@
 
         <activity
             android:name=".FindTableActivity"
-            android:label="@string/title_activity_find_table"
+            android:label="@string/placeholder"
             android:parentActivityName=".UserHomeActivity"
             android:windowSoftInputMode="adjustResize" >
             <meta-data
@@ -133,8 +134,13 @@
         </activity>
 
         <activity
-            android:name=".ChargeCustomer"
-            android:label="@string/title_activity_charge_customer" >
+            android:name=".ChargeCustomerActivity"
+            android:label="@string/placeholder"
+            android:parentActivityName=".ServingActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.taapesh.androidrestaurant.ServingActivity" />
         </activity>
 
     </application>

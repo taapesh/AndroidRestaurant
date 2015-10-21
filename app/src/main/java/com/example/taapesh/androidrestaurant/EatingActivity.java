@@ -12,22 +12,19 @@ public class EatingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_table);
+        setContentView(R.layout.activity_eating);
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setCustomView(R.layout.custom_action_bar);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowHomeEnabled(false);
-
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText("Dining");
+        actionBarText.setText(R.string.title_eating);
 
-        /* Instantiate PubNub */
-        //Pubnub pubnub = new Pubnub("Your Publish Key Here", "Your Subscribe Key Here");
     }
 
     @Override

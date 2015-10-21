@@ -16,15 +16,14 @@ public class AddPaymentActivity extends AppCompatActivity {
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setCustomView(R.layout.custom_action_bar);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowHomeEnabled(false);
-
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText("Add Payment");
+        actionBarText.setText(R.string.title_add_payment);
     }
 
     @Override

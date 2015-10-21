@@ -10,7 +10,6 @@ import android.widget.TextView;
 public class FindTableActivity extends AppCompatActivity {
     private static String[] sampleServers = {"Bob", "Alice", "John"};
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,17 +17,14 @@ public class FindTableActivity extends AppCompatActivity {
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setCustomView(R.layout.custom_action_bar);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowHomeEnabled(false);
-
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText("Start Table");
-
-
+        actionBarText.setText(R.string.title_find_table);
     }
 
     @Override
