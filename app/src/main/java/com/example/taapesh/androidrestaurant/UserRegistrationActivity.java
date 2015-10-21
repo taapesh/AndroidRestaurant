@@ -1,5 +1,8 @@
 package com.example.taapesh.androidrestaurant;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -15,29 +18,23 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLEncoder;
-
-public class UserRegistrationActivity extends AppCompatActivity {
-    private static final String REGISTER_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/register/";
+public class UserRegistrationActivity extends AppCompatActivity
+{
     private static EditText firstNameField;
     private static EditText lastNameField;
     private static EditText emailField;
     private static EditText passwordField;
     private static EditText phoneField;
 
+    private SharedPreferences sharedPreferences;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registration);
+
+        sharedPreferences = getSharedPreferences(PreferenceManager.MY_PREFERENCES, Context.MODE_PRIVATE);
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -96,94 +93,54 @@ public class UserRegistrationActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class RegisterInBackground extends AsyncTask<String, Void, JSONObject> {
+    class RegisterInBackground extends AsyncTask<String, Void, JSONObject>
+    {
+        protected JSONObject doInBackground(String... fields)
+        {
+            // Get registration data
+            String firstName = fields[0];
+            String lastName = fields[1];
+            String phoneNumber = fields[2];
+            String email = fields[3];
+            String password = fields[4];
 
-        private Exception _e = null;
-
-        protected JSONObject doInBackground(String... fields) {
-            HttpURLConnection conn = null;
-            try {
-                // Get registration data
-                String firstName = fields[0];
-                String lastName = fields[1];
-                String phone_number = fields[2];
-                String email = fields[3];
-                String password = fields[4];
-
-                // Encode data
-                String data = URLEncoder.encode("first_name", "UTF-8") + "=" + URLEncoder.encode(firstName, "UTF-8");
-                data += "&" + URLEncoder.encode("last_name", "UTF-8") + "=" + URLEncoder.encode(lastName, "UTF-8");
-                data += "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
-                data += "&" + URLEncoder.encode("phone_number", "UTF-8") + "=" + URLEncoder.encode(phone_number, "UTF-8");
-
-                // Setup Http POST request with data
-                URL url = new URL(REGISTER_ENDPOINT);
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write(data);
-                wr.flush();
-                conn.connect();
-
-                // Create JSON object from response content
-                InputStream is;
-                if (conn.getResponseCode() / 100 == 2) {
-                    is = conn.getInputStream();
-                } else {
-                    is = conn.getErrorStream();
-                }
-
-                BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-                StringBuilder sb = new StringBuilder();
-                String inputLine;
-                while ((inputLine = rd.readLine()) != null) {
-                    sb.append(inputLine + "\n");
-                }
-                wr.close();
-                rd.close();
-
-                return new JSONObject(sb.toString());
-            } catch (MalformedURLException e) {
-                // URL is invalid
-                _e = e;
-            } catch (SocketTimeoutException e) {
-                // data retrieval or connection timed out
-                _e = e;
-            } catch (IOException e) {
-                // could not read response body
-                // (could not create input stream)
-                _e = e;
-            } catch (JSONException e) {
-                // response body is no valid JSON string
-                _e = e;
-            } finally {
-                if (conn != null) {
-                    conn.disconnect();
-                }
-            }
-            if (_e != null)
-                Log.e("RegisterException", _e.toString());
-            return null;
+            LoginRegisterHelper loginRegisterHelper = new LoginRegisterHelper();
+            return loginRegisterHelper.tryRegister(firstName, lastName, phoneNumber, email, password);
         }
 
-        protected void onPostExecute(JSONObject result) {
-            // TODO: do something with the result
+        protected void onPostExecute(JSONObject registerResult)
+        {
             // check if user was returned and if so, log the user in and go to user home page
             // otherwise, determine the error e.g. email/phone is already in use, and display it
-
-            if (result != null)
+            try
             {
-                Log.i("RegisterResult", result.toString());
+                int result = (int) registerResult.get("result");
+                if (result == LoginRegisterHelper.REGISTER_SUCCESS)
+                {
+                    Log.i("REGISTER_TEST", "LOL HELLO");
+                    // Registration success, set user details in preferences
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(PreferenceManager.TOKEN, registerResult.getString("token"));
+                    editor.putInt(PreferenceManager.USER_ID, registerResult.getInt("id"));
+                    editor.putString(PreferenceManager.FIRST_NAME, registerResult.getString("firstName"));
+                    editor.putString(PreferenceManager.LAST_NAME, registerResult.getString("lastName"));
+                    editor.putString(PreferenceManager.EMAIL, registerResult.getString("email"));
+                    editor.putString(PreferenceManager.PHONE, registerResult.getString("phoneNumber"));
+                    editor.commit();
 
-                try {
-                    if (result.get("id") != null) {
-
-                    }
-                } catch (JSONException e) {
-
+                    Intent goToUserHome = new Intent(UserRegistrationActivity.this, UserHomeActivity.class);
+                    finish();
+                    startActivity(goToUserHome);
                 }
+                else
+                {
+                    // handle some registration error
+                    Log.e("RegistrationError", "Something went wrong");
+                }
+            }
+            catch (JSONException e)
+            {
+                // pass
             }
         }
     }

@@ -110,7 +110,7 @@ public class UserLoginActivity extends AppCompatActivity
             String email = fields[0];
             String password = fields[1];
 
-            LoginHelper loginHelper = new LoginHelper();
+            LoginRegisterHelper loginHelper = new LoginRegisterHelper();
             return loginHelper.tryLogin(email, password);
         }
 
@@ -119,7 +119,7 @@ public class UserLoginActivity extends AppCompatActivity
             try
             {
                 int result = (int)loginResult.get("result");
-                if (result == LoginHelper.LOGIN_SUCCESS)
+                if (result == LoginRegisterHelper.LOGIN_SUCCESS)
                 {
                     // Login success, set user details in preferences
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -135,8 +135,8 @@ public class UserLoginActivity extends AppCompatActivity
                     finish();
                     startActivity(goToUserHome);
                 } else {
-                    // handle some error
-                    Log.i("LoginError", "Something went wrong");
+                    // handle some login error
+                    Log.e("LoginError", "Something went wrong");
                 }
             }
             catch (JSONException e)

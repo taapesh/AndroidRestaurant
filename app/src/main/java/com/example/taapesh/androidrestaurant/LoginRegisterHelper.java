@@ -18,13 +18,17 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class LoginHelper
+public class LoginRegisterHelper
 {
     private static final String LOGIN_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/login/";
     private static final String USER_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/me/";
+    private static final String REGISTER_ENDPOINT = "http://taapesh.pythonanywhere.com/auth/register/";
 
     public static final int LOGIN_SUCCESS = 1;
     public static final int LOGIN_FAIL = -1;
+
+    public static final int REGISTER_SUCCESS = 1;
+    public static final int REGISTER_FAIL = -1;
 
     private static final int CONNECTION_TIMEOUT = 7;
     private static final int DATARETRIEVAL_TIMEOUT = 7;
@@ -69,7 +73,8 @@ public class LoginHelper
                 Log.i("LoginResult", userResult.toString());
                 String firstName = userResult.getString("first_name");
 
-                if (firstName != null) {
+                if (firstName != null)
+                {
                     loginReturn.put("result", LOGIN_SUCCESS);
                     loginReturn.put("token", token);
                     loginReturn.put("firstName", userResult.getString("first_name"));
@@ -113,9 +118,8 @@ public class LoginHelper
             if (getUserConn != null)
                 getUserConn.disconnect();
 
-            if (_e != null) {
+            if (_e != null)
                 Log.e("LoginException", _e.toString());
-            }
         }
 
         // If we made it here, login was unsuccessful
@@ -124,6 +128,88 @@ public class LoginHelper
         } catch (JSONException e) {}
 
         return loginReturn;
+    }
+
+    public JSONObject tryRegister(String firstName, String lastName, String phoneNumber, String email, String password)
+    {
+        Exception _e = null;
+        HttpURLConnection registerConn = null;
+        JSONObject registerReturn = new JSONObject();
+
+        try {
+            // Encode data
+            String data = URLEncoder.encode("first_name", "UTF-8") + "=" + URLEncoder.encode(firstName, "UTF-8");
+            data += "&" + URLEncoder.encode("last_name", "UTF-8") + "=" + URLEncoder.encode(lastName, "UTF-8");
+            data += "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+            data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+            data += "&" + URLEncoder.encode("phone_number", "UTF-8") + "=" + URLEncoder.encode(phoneNumber, "UTF-8");
+
+            // Setup Http POST request with data
+            URL url = new URL(REGISTER_ENDPOINT);
+            registerConn = (HttpURLConnection) url.openConnection();
+            registerConn.setRequestMethod("POST");
+            registerConn.setDoOutput(true);
+            OutputStreamWriter wr = new OutputStreamWriter(registerConn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            registerConn.connect();
+            wr.close();
+
+            JSONObject registerResult = readInput(registerConn);
+            Log.i("RegisterResult", registerResult.toString());
+
+            if (registerResult.get("id") != null)
+            {
+                // Registration succeeded, get user info and obtain auth token
+                registerReturn.put("result", REGISTER_SUCCESS);
+
+                JSONObject loginResult = tryLogin(email, password);
+                int result = (int)loginResult.get("result");
+
+                if (result == LOGIN_SUCCESS)
+                {
+                    registerReturn.put("token", loginResult.getString("token"));
+                    registerReturn.put("firstName", loginResult.getString("firstName"));
+                    registerReturn.put("lastName", loginResult.getString("lastName"));
+                    registerReturn.put("email", loginResult.getString("email"));
+                    registerReturn.put("id", loginResult.getString("id"));
+                    registerReturn.put("phoneNumber", loginResult.getString("phoneNumber"));
+
+                    return registerReturn;
+                }
+            }
+        }
+        catch (MalformedURLException e) {
+            // URL is invalid
+            _e = e;
+        }
+        catch (SocketTimeoutException e) {
+            // data retrieval or connection timed out
+            _e = e;
+        }
+        catch (IOException e) {
+            // could not read response body
+            // (could not create input stream)
+            _e = e;
+        }
+        catch (JSONException e) {
+            // response body is no valid JSON string
+            _e = e;
+        }
+        finally {
+            if (registerConn != null)
+                registerConn.disconnect();
+
+            if (_e != null)
+                Log.e("RegisterException", _e.toString());
+        }
+
+        // If we made it here, registration was unsuccessful
+        try {
+            registerReturn.put("result", REGISTER_FAIL);
+        } catch (JSONException e) {}
+
+        return registerReturn;
     }
 
     private JSONObject readInput(HttpURLConnection conn) throws IOException, JSONException

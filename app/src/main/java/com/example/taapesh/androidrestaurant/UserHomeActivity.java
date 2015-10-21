@@ -95,9 +95,8 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
 
-        SharedPreferences preferences = getSharedPreferences("Preferences", MODE_PRIVATE);
-        String name = preferences.getString("first_name", "User");
-        Toast.makeText(getApplicationContext(), "Welcome, " + name, Toast.LENGTH_LONG).show();
+        String firstName = PreferenceManager.getPreference(this, PreferenceManager.FIRST_NAME);
+        Toast.makeText(getApplicationContext(), "Welcome, " + firstName, Toast.LENGTH_LONG).show();
     }
 
     @Override
