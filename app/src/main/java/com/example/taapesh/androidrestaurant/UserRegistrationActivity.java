@@ -98,6 +98,8 @@ public class UserRegistrationActivity extends AppCompatActivity {
 
     class RegisterInBackground extends AsyncTask<String, Void, JSONObject> {
 
+        private Exception _e = null;
+
         protected JSONObject doInBackground(String... fields) {
             HttpURLConnection conn = null;
             try {
@@ -145,18 +147,24 @@ public class UserRegistrationActivity extends AppCompatActivity {
                 return new JSONObject(sb.toString());
             } catch (MalformedURLException e) {
                 // URL is invalid
+                _e = e;
             } catch (SocketTimeoutException e) {
                 // data retrieval or connection timed out
+                _e = e;
             } catch (IOException e) {
                 // could not read response body
                 // (could not create input stream)
+                _e = e;
             } catch (JSONException e) {
                 // response body is no valid JSON string
+                _e = e;
             } finally {
                 if (conn != null) {
                     conn.disconnect();
                 }
             }
+            if (_e != null)
+                Log.e("RegisterException", _e.toString());
             return null;
         }
 
@@ -164,6 +172,19 @@ public class UserRegistrationActivity extends AppCompatActivity {
             // TODO: do something with the result
             // check if user was returned and if so, log the user in and go to user home page
             // otherwise, determine the error e.g. email/phone is already in use, and display it
+
+            if (result != null)
+            {
+                Log.i("RegisterResult", result.toString());
+
+                try {
+                    if (result.get("id") != null) {
+
+                    }
+                } catch (JSONException e) {
+
+                }
+            }
         }
     }
 }
