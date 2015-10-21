@@ -1,6 +1,5 @@
-package com.example.taapesh.androidrestaurant;
+package com.example.taapesh.androidrestaurant.activity;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,37 +7,33 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class PaymentActivity extends AppCompatActivity {
+import com.example.taapesh.androidrestaurant.R;
+
+public class FindTableActivity extends AppCompatActivity {
+
+    private static String[] sampleServers = {"Bob", "Alice", "John"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment);
+        setContentView(R.layout.activity_find_table);
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setCustomView(R.layout.payment_action_bar);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowHomeEnabled(false);
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText(R.string.title_payment);
-
-        View addPaymentArea = findViewById(R.id.addPaymentArea);
-        addPaymentArea.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent goToAddPayment = new Intent(PaymentActivity.this, AddPaymentActivity.class);
-                startActivity(goToAddPayment);
-            }
-        });
+        actionBarText.setText(R.string.title_find_table);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_payment, menu);
+        getMenuInflater().inflate(R.menu.menu_find_table, menu);
         return true;
     }
 

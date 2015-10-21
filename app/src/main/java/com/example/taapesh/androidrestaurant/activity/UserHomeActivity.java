@@ -1,4 +1,4 @@
-package com.example.taapesh.androidrestaurant;
+package com.example.taapesh.androidrestaurant.activity;
 
 import android.content.Intent;
 import android.support.v4.view.GravityCompat;
@@ -11,7 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.taapesh.androidrestaurant.util.PreferenceManager;
+import com.example.taapesh.androidrestaurant.R;
+
 public class UserHomeActivity extends AppCompatActivity {
+
     private static DrawerLayout mDrawerLayout;
     private static View menuToggleArea;
 

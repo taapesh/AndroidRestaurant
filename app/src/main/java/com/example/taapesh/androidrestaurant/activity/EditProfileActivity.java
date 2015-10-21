@@ -1,4 +1,4 @@
-package com.example.taapesh.androidrestaurant;
+package com.example.taapesh.androidrestaurant.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.taapesh.androidrestaurant.R;
 
 public class EditProfileActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.taapesh.androidrestaurant;
+package com.example.taapesh.androidrestaurant.activity;
 
 // Android imports
 import android.content.Context;
@@ -17,20 +17,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-// Java imports
+import com.example.taapesh.androidrestaurant.util.LoginRegisterHelper;
+import com.example.taapesh.androidrestaurant.util.PreferenceManager;
+import com.example.taapesh.androidrestaurant.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class UserLoginActivity extends AppCompatActivity
-{
+public class UserLoginActivity extends AppCompatActivity {
+
     private static EditText loginEmailField;
     private static EditText loginPasswordField;
     private SharedPreferences sharedPreferences;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
 
@@ -113,13 +114,10 @@ public class UserLoginActivity extends AppCompatActivity
             return loginHelper.tryLogin(email, password);
         }
 
-        protected void onPostExecute(JSONObject loginResult)
-        {
-            try
-            {
+        protected void onPostExecute(JSONObject loginResult) {
+            try {
                 int result = (int)loginResult.get("result");
-                if (result == LoginRegisterHelper.LOGIN_SUCCESS)
-                {
+                if (result == LoginRegisterHelper.LOGIN_SUCCESS) {
                     // Login success, set user details in preferences
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(PreferenceManager.TOKEN, loginResult.getString("token"));
@@ -133,13 +131,13 @@ public class UserLoginActivity extends AppCompatActivity
                     Intent goToUserHome = new Intent(UserLoginActivity.this, UserHomeActivity.class);
                     finish();
                     startActivity(goToUserHome);
-                } else {
+                }
+                else {
                     // handle some login error
                     Log.e("LoginError", "Something went wrong");
                 }
             }
-            catch (JSONException e)
-            {
+            catch (JSONException e) {
                 // pass
             }
         }

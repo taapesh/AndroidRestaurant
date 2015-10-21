@@ -1,4 +1,4 @@
-package com.example.taapesh.androidrestaurant;
+package com.example.taapesh.androidrestaurant.object;
 
 import android.os.Parcel;
 import android.os.Parcelable;

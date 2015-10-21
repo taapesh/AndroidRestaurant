@@ -1,4 +1,4 @@
-package com.example.taapesh.androidrestaurant;
+package com.example.taapesh.androidrestaurant.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,39 +6,42 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class ChargeCustomerActivity extends AppCompatActivity {
-    private Table table;
+import com.example.taapesh.androidrestaurant.R;
+
+public class WaiterHomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_charge_customer);
+        setContentView(R.layout.activity_waiter_home);
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setCustomView(R.layout.custom_action_bar);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowHomeEnabled(false);
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText(R.string.title_charge_customer);
+        actionBarText.setText(R.string.placeholder);
 
-        Intent i = getIntent();
-        table = (Table) i.getParcelableExtra("table");
-
-        // Test get Table parcel
-        Toast.makeText(ChargeCustomerActivity.this, "Charge for " + table.getOwnerFirstName(), Toast.LENGTH_LONG).show();
+        Button startServingButton = (Button) findViewById(R.id.startServingButton);
+        startServingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToServing = new Intent(WaiterHomeActivity.this, ServingActivity.class);
+                startActivity(goToServing);
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_charge_customer, menu);
+        getMenuInflater().inflate(R.menu.menu_waiter_home, menu);
         return true;
     }
 

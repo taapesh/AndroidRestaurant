@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.taapesh.androidrestaurant.WaiterHomeActivity">
+    tools:context="com.example.taapesh.androidrestaurant.activity.WaiterHomeActivity">
 
 </menu>

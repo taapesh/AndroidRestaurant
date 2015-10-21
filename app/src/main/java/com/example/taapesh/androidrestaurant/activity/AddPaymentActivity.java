@@ -1,4 +1,4 @@
-package com.example.taapesh.androidrestaurant;
+package com.example.taapesh.androidrestaurant.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,12 +7,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class EatingActivity extends AppCompatActivity {
+import com.example.taapesh.androidrestaurant.R;
+
+public class AddPaymentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_eating);
+        setContentView(R.layout.activity_add_payment);
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -23,14 +25,13 @@ public class EatingActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(false);
         View v = actionBar.getCustomView();
         TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText(R.string.title_eating);
-
+        actionBarText.setText(R.string.title_add_payment);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_table, menu);
+        getMenuInflater().inflate(R.menu.menu_add_payment, menu);
         return true;
     }
 

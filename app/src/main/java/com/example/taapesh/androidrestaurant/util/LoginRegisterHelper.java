@@ -1,4 +1,4 @@
-package com.example.taapesh.androidrestaurant;
+package com.example.taapesh.androidrestaurant.util;
 
 import android.util.Log;
 import org.json.JSONException;

@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".StartActivity"
+            android:name=".activity.StartActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,125 +22,125 @@
         </activity>
 
         <activity
-            android:name=".UserHomeActivity"
+            android:name=".activity.UserHomeActivity"
             android:label="@string/placeholder" >
         </activity>
 
         <activity
-            android:name=".WaiterHomeActivity"
+            android:name=".activity.WaiterHomeActivity"
             android:label="@string/placeholder" >
         </activity>
 
         <activity
-            android:name=".EatingActivity"
+            android:name=".activity.EatingActivity"
             android:label="@string/placeholder" >
         </activity>
 
         <activity
-            android:name=".UserLoginActivity"
+            android:name=".activity.UserLoginActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".StartActivity" >
+            android:parentActivityName=".activity.StartActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taapesh.androidrestaurant.StartActivity" />
+                android:value=".activity.StartActivity" />
         </activity>
 
         <activity
-            android:name=".UserRegistrationActivity"
+            android:name=".activity.UserRegistrationActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".StartActivity"
+            android:parentActivityName=".activity.StartActivity"
             android:windowSoftInputMode="adjustResize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taapesh.androidrestaurant.StartActivity" />
+                android:value=".activity.StartActivity" />
         </activity>
 
         <activity
-            android:name=".ServingActivity"
+            android:name=".activity.ServingActivity"
             android:label="@string/placeholder" >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taapesh.androidrestaurant.UserLoginActivity" />
+                android:value=".activity.UserLoginActivity" />
         </activity>
 
         <activity
-            android:name=".TipRatingReviewActivity"
+            android:name=".activity.TipRatingReviewActivity"
             android:label="@string/placeholder" >
         </activity>
 
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activity.ProfileActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".UserHomeActivity" >
+            android:parentActivityName=".activity.UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
+                android:value=".activity.UserHomeActivity" />
         </activity>
 
         <activity
-            android:name=".HistoryActivity"
+            android:name=".activity.HistoryActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".UserHomeActivity" >
+            android:parentActivityName=".activity.UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
+                android:value=".activity.UserHomeActivity" />
         </activity>
 
         <activity
-            android:name=".PaymentActivity"
+            android:name=".activity.PaymentActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".UserHomeActivity" >
+            android:parentActivityName=".activity.UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
+                android:value=".activity.UserHomeActivity" />
         </activity>
 
         <activity
-            android:name=".AddPaymentActivity"
+            android:name=".activity.AddPaymentActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".PaymentActivity" >
+            android:parentActivityName=".activity.PaymentActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taapesh.androidrestaurant.PaymentActivity" />
+                android:value=".activity.PaymentActivity" />
         </activity>
 
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".activity.EditProfileActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".ProfileActivity" >
+            android:parentActivityName=".activity.ProfileActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taapesh.androidrestaurant.ProfileActivity" />
+                android:value=".activity.ProfileActivity" />
         </activity>
 
         <activity
-            android:name=".JoinTableActivity"
+            android:name=".activity.JoinTableActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".UserHomeActivity" >
+            android:parentActivityName=".activity.UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
+                android:value=".activity.UserHomeActivity" />
         </activity>
 
         <activity
-            android:name=".FindTableActivity"
+            android:name=".activity.FindTableActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".UserHomeActivity"
+            android:parentActivityName=".activity.UserHomeActivity"
             android:windowSoftInputMode="adjustResize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
+                android:value=".activity.UserHomeActivity" />
         </activity>
 
         <activity
-            android:name=".ChargeCustomerActivity"
+            android:name=".activity.ChargeCustomerActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".ServingActivity" >
+            android:parentActivityName=".activity.ServingActivity" >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taapesh.androidrestaurant.ServingActivity" />
+                android:value=".activity.ServingActivity" />
         </activity>
 
     </application>

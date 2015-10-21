@@ -1,4 +1,4 @@
-package com.example.taapesh.androidrestaurant;
+package com.example.taapesh.androidrestaurant.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,7 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 
+import com.example.taapesh.androidrestaurant.R;
+
 public class StartActivity extends Activity {
+
     protected Button goToLoginButton;
     protected Button goToRegistrationButton;
 

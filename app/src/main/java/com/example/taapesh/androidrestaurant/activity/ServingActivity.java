@@ -1,4 +1,4 @@
-package com.example.taapesh.androidrestaurant;
+package com.example.taapesh.androidrestaurant.activity;
 
 // Android imports
 import android.content.Intent;
@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 // PubNub imports
+import com.example.taapesh.androidrestaurant.R;
+import com.example.taapesh.androidrestaurant.object.Table;
 import com.pubnub.api.Pubnub;
 import com.pubnub.api.Callback;
 import com.pubnub.api.PubnubError;
@@ -27,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ServingActivity extends AppCompatActivity {
+
     private Pubnub pubnub;
     private static final String PUBLISH_KEY = "pub-c-2344ebc7-3daf-4ffd-8c58-a8f809e85a2e";
     private static final String SUBSCRIBE_KEY = "sub-c-01429274-6938-11e5-a5be-02ee2ddab7fe";
@@ -248,6 +251,7 @@ public class ServingActivity extends AppCompatActivity {
     }
 
     private class ActiveTableViewer implements Runnable {
+
         // Display a new active table on UI
         private final CardView cardView;
         private final Table table;
@@ -274,6 +278,7 @@ public class ServingActivity extends AppCompatActivity {
     }
 
     private class FinishedTableViewer implements Runnable {
+
         // Display a finished table on UI
         private final CardView cardView;
         private final Table table;
@@ -304,6 +309,7 @@ public class ServingActivity extends AppCompatActivity {
     }
 
     private class ReorderTables implements Runnable {
+
         // Display active tables in correct order
         public void run() {
             activeTablesRoot.removeAllViews();
@@ -326,6 +332,7 @@ public class ServingActivity extends AppCompatActivity {
     }
 
     private class IncreasePartyCount implements Runnable {
+
         private final Table table;
 
         IncreasePartyCount(Table table) {
