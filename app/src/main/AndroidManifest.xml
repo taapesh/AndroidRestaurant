@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.taapesh.androidrestaurant">
+    package="com.example.taapesh.androidrestaurant" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,18 +19,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".UserHomeActivity"
             android:label="UserHomeActivity" >
         </activity>
+
         <activity
             android:name=".WaiterHomeActivity"
             android:label="@string/title_activity_waiter_home" >
         </activity>
+
         <activity
             android:name=".EatingActivity"
             android:label="EatingActivity" >
         </activity>
+
         <activity
             android:name=".UserLoginActivity"
             android:label="Sign In"
@@ -39,23 +43,31 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.taapesh.androidrestaurant.StartActivity" />
         </activity>
+
         <activity
             android:name=".UserRegistrationActivity"
             android:label="Register"
-            android:windowSoftInputMode="adjustResize"
-            android:parentActivityName=".StartActivity" >
+            android:parentActivityName=".StartActivity"
+            android:windowSoftInputMode="adjustResize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.taapesh.androidrestaurant.StartActivity" />
         </activity>
+
         <activity
             android:name=".ServingActivity"
             android:label="@string/title_activity_serving" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.taapesh.androidrestaurant.UserLoginActivity" />
         </activity>
+
         <activity
             android:name=".TipRatingReviewActivity"
             android:label="@string/title_activity_tip_rating_review" >
         </activity>
+
         <activity
             android:name=".ProfileActivity"
             android:label="Profile"
@@ -64,6 +76,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
         </activity>
+
         <activity
             android:name=".HistoryActivity"
             android:label="History"
@@ -72,6 +85,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
         </activity>
+
         <activity
             android:name=".PaymentActivity"
             android:label="Payment"
@@ -80,6 +94,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
         </activity>
+
         <activity
             android:name=".AddPaymentActivity"
             android:label="Add Payment"
@@ -88,6 +103,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.taapesh.androidrestaurant.PaymentActivity" />
         </activity>
+
         <activity
             android:name=".EditProfileActivity"
             android:label="Edit Profile"
@@ -96,6 +112,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.taapesh.androidrestaurant.ProfileActivity" />
         </activity>
+
         <activity
             android:name=".JoinTableActivity"
             android:label="@string/title_activity_join_table"
@@ -104,15 +121,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
         </activity>
+
         <activity
             android:name=".FindTableActivity"
             android:label="@string/title_activity_find_table"
-            android:windowSoftInputMode="adjustResize"
-            android:parentActivityName=".UserHomeActivity" >
+            android:parentActivityName=".UserHomeActivity"
+            android:windowSoftInputMode="adjustResize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.taapesh.androidrestaurant.UserHomeActivity" />
         </activity>
-    </application>
 
+        <activity
+            android:name=".ChargeCustomer"
+            android:label="@string/title_activity_charge_customer" >
+        </activity>
+
+    </application>
 </manifest>

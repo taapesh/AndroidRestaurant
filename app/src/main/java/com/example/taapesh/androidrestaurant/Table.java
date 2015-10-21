@@ -1,11 +1,13 @@
 package com.example.taapesh.androidrestaurant;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class Table
+public class Table implements Parcelable
 {
     private int ownerId;
     private String ownerEmail;
@@ -18,7 +20,7 @@ public class Table
     private CardView cardView;
     private int viewIdx;
     // Map members at table to their percentage of the check, initially 0
-    private static Map<Integer, Integer> members = new HashMap<>();
+    private HashMap<Integer, Integer> members = new HashMap<>();
 
     /* Table constructor */
     public Table(Integer userId, String email, String firstName, String lastName, CardView cardView, int viewIdx)
@@ -109,5 +111,40 @@ public class Table
     public void setViewIdx(int idx)
     {
         viewIdx = idx;
+    }
+
+    /* Implementing Parcelable */
+
+    public int describeContents() {
+        return 0;
+    }
+
+    // Write table data to parcel
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(ownerId);
+        out.writeString(ownerEmail);
+        out.writeString(ownerFirstName);
+        out.writeString(ownerLastName);
+        out.writeInt(partySize);
+    }
+
+    // Recreate table from parcel
+    public static final Parcelable.Creator<Table> CREATOR = new Parcelable.Creator<Table>() {
+        public Table createFromParcel(Parcel in) {
+            return new Table(in);
+        }
+
+        public Table[] newArray(int size) {
+            return new Table[size];
+        }
+    };
+
+    // Table constructor using Parcel
+    private Table(Parcel in) {
+        this.ownerId = in.readInt();
+        this.ownerEmail = in.readString();
+        this.ownerFirstName = in.readString();
+        this.ownerLastName = in.readString();
+        this.partySize = in.readInt();
     }
 }

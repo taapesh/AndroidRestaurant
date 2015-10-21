@@ -1,5 +1,7 @@
 package com.example.taapesh.androidrestaurant;
 
+// Android imports
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -12,21 +14,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+// PubNub imports
 import com.pubnub.api.Pubnub;
 import com.pubnub.api.Callback;
 import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
+// Java imports
+import java.util.ArrayList;
+import java.util.Iterator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+
 
 
 public class ServingActivity extends AppCompatActivity
 {
-    private static Pubnub pubnub;
+    private Pubnub pubnub;
     private static final String PUBLISH_KEY = "pub-c-2344ebc7-3daf-4ffd-8c58-a8f809e85a2e";
     private static final String SUBSCRIBE_KEY = "sub-c-01429274-6938-11e5-a5be-02ee2ddab7fe";
 
@@ -53,35 +58,14 @@ public class ServingActivity extends AppCompatActivity
     boolean[] isActiveTableViewUsed = new boolean[MAX_TABLES];
     boolean[] isFinishedTableViewUsed = new boolean[MAX_TABLES];
 
-    private static LinearLayout activeTablesRoot;
-    private static LinearLayout finishedTablesRoot;
+    private LinearLayout activeTablesRoot;
+    private LinearLayout finishedTablesRoot;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onResume()
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_serving);
-        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        actionBar.setCustomView(R.layout.custom_action_bar);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(false);
-        View v = actionBar.getCustomView();
-        TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText("Serving");
-
-        activeTablesRoot = (LinearLayout) findViewById(R.id.activeTablesRoot);
-        finishedTablesRoot = (LinearLayout) findViewById(R.id.finishedTablesRoot);
-
-        for(int i = 0; i < MAX_TABLES; ++i)
-        {
-            activeTableCardViews[i] = (CardView) activeTablesRoot.getChildAt(i);
-            finishedTableCardViews[i] = (CardView) finishedTablesRoot.getChildAt(i);
-            finishedTableCardViews[i].setVisibility(View.GONE);
-            activeTableCardViews[i].setVisibility(View.GONE);
-        }
+        super.onResume();
+        Log.i("RESUME", "Resuming activity");
 
         // Initialize Pubnub
         pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);
@@ -113,6 +97,37 @@ public class ServingActivity extends AppCompatActivity
         catch (PubnubException e)
         {
             // Handle PubNub initialization error
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        Log.i("CREATE", "Creating activity");
+        setContentView(R.layout.activity_serving);
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
+        View v = actionBar.getCustomView();
+        TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
+        actionBarText.setText("Serving");
+
+        activeTablesRoot = (LinearLayout) findViewById(R.id.activeTablesRoot);
+        finishedTablesRoot = (LinearLayout) findViewById(R.id.finishedTablesRoot);
+
+        for(int i = 0; i < MAX_TABLES; ++i)
+        {
+            activeTableCardViews[i] = (CardView) activeTablesRoot.getChildAt(i);
+            finishedTableCardViews[i] = (CardView) finishedTablesRoot.getChildAt(i);
+            finishedTableCardViews[i].setVisibility(View.GONE);
+            activeTableCardViews[i].setVisibility(View.GONE);
+            isFinishedTableViewUsed[i] = false;
+            isActiveTableViewUsed[i] = false;
         }
     }
 
@@ -240,7 +255,6 @@ public class ServingActivity extends AppCompatActivity
         if (t != null)
         {
             activeTableStack.remove(t);
-
             finishedTableStack.add(t);
             t.closeTable();
 
@@ -248,6 +262,8 @@ public class ServingActivity extends AppCompatActivity
             isFinishedTableViewUsed[tableViewIdx] = true;
 
             runOnUiThread(new FinishedTableViewer(t, tableViewIdx, finishedTableCardViews[tableViewIdx]));
+
+            setOnClick(finishedTableCardViews[tableViewIdx], t);
         }
     }
 
@@ -294,6 +310,8 @@ public class ServingActivity extends AppCompatActivity
 
             // Remove and add to push card to bottom of linear layout
             activeTablesRoot.removeView(cardView);
+            if (table.getView().getParent() != null)
+                ((ViewGroup) table.getView().getParent()).removeView(table.getView());
             activeTablesRoot.addView(cardView);
 
             Toast.makeText(ServingActivity.this, "Customer connected", Toast.LENGTH_LONG).show();
@@ -417,6 +435,35 @@ public class ServingActivity extends AppCompatActivity
         LinearLayout cardLayout = (LinearLayout) cardView.getChildAt(0);
         TextView tv = (TextView) cardLayout.getChildAt(PARTY_TITLE);
         tv.setText(t.getOwnerFirstName() + " is finished");
+    }
+
+    private void setOnClick(final View v, final Table table){
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToChargeCustomer = new Intent(ServingActivity.this, ChargeCustomer.class);
+                goToChargeCustomer.putExtra("table", table);
+                startActivity(goToChargeCustomer);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i("STOP", "Stopping activity");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i("PAUSE", "Pausing activity");
+        pubnub.unsubscribe("woodhouse");
     }
 }
 

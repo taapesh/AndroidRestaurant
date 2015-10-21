@@ -18,4 +18,5 @@
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_activity_join_table">JoinTableActivity</string>
     <string name="title_activity_find_table">FindTableActivity</string>
+    <string name="title_activity_charge_customer">ChargeCustomer</string>
 </resources>

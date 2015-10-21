@@ -1,5 +1,6 @@
 package com.example.taapesh.androidrestaurant;
 
+// Android imports
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.Intent;
@@ -16,7 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-// HTTP stuff
+// Java imports
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -91,6 +92,7 @@ public class UserLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent goToServing = new Intent(UserLoginActivity.this, ServingActivity.class);
+                finish();
                 startActivity(goToServing);
             }
         });
@@ -235,6 +237,7 @@ public class UserLoginActivity extends AppCompatActivity {
 
             if (result.equals("1")) {
                 Intent goToUserHome = new Intent(UserLoginActivity.this, UserHomeActivity.class);
+                finish();
                 startActivity(goToUserHome);
             }
             else if (result.equals("")) {
