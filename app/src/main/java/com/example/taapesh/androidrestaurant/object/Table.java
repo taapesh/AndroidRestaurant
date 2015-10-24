@@ -3,33 +3,54 @@ package com.example.taapesh.androidrestaurant.object;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.widget.CardView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 public class Table implements Parcelable {
+
     private int ownerId;
+    private int serverId;
+    private int partySize;
     private String ownerEmail;
     private String ownerFirstName;
     private String ownerLastName;
-    private int partySize;
     private boolean requestMade;
-    private long timeOfRequest;
     private boolean isFinished;
+    private long timeOfFinish;
+    private long timeOfRequest;
     private CardView cardView;
     private int viewIdx;
     private HashMap<Integer, Integer> members = new HashMap<>(); // Map members to their portion of the bill
 
-    public Table(Integer userId, String email, String firstName, String lastName, CardView cardView, int viewIdx) {
-        ownerId = userId;
+    public Table(JSONObject tableData) throws JSONException {
+        ownerId = tableData.getInt("ownerId");
+        serverId = tableData.getInt("serverId");
+        partySize = tableData.getInt("partySize");
+        ownerEmail = tableData.getString("ownerEmail");
+        ownerFirstName = tableData.getString("ownerFirstName");
+        ownerLastName = tableData.getString("ownerLastName");
+        requestMade = tableData.getBoolean("requestMade");
+        isFinished = tableData.getBoolean("isFinished");
+        timeOfFinish = tableData.getLong("timeOfFinish");
+        timeOfRequest = tableData.getLong("timeOfRequest");
+    }
+
+    public Table(JSONObject ownerDetails, CardView cardView, int viewIdx) throws JSONException {
         partySize = 1;
-        members.put(userId, 100);
-        ownerEmail = email;
-        ownerFirstName = firstName;
-        ownerLastName = lastName;
+        members.put(ownerId, 100);
+        timeOfRequest = -1;
         requestMade = false;
         isFinished = false;
-        timeOfRequest = -1;
         this.cardView = cardView;
         this.viewIdx = viewIdx;
+        this.ownerId = ownerDetails.getInt("user_id");
+        this.ownerEmail = ownerDetails.getString("email");
+        this.ownerFirstName = ownerDetails.getString("first_name");
+        this.ownerLastName = ownerDetails.getString("last_name");
+
     }
 
     public void addMember(int userId, String firstName, String lastName) {
@@ -46,13 +67,14 @@ public class Table implements Parcelable {
         timeOfRequest = System.currentTimeMillis();
     }
 
-    public void serveRequest() {
+    public void completeRequest() {
         requestMade = false;
         timeOfRequest = -1;
     }
 
     public void closeTable() {
         isFinished = true;
+        timeOfFinish = System.currentTimeMillis();
     }
 
     public int getPartySize() {
@@ -75,18 +97,25 @@ public class Table implements Parcelable {
         return ownerEmail;
     }
 
-    public boolean getRequestStatus() {
+    public boolean hasMadeRequest() {
         return requestMade;
+    }
+
+    public boolean hasFinished() {
+        return isFinished;
     }
 
     public CardView getView() {
         return cardView;
     }
 
+    // Returns time since request was made in seconds
     public long getTimeSinceRequest() {
-        long timeNow = System.currentTimeMillis();
-        long secondsElapsed = (timeNow - timeOfRequest)/1000;
-        return secondsElapsed;
+        return (System.currentTimeMillis() - timeOfRequest)/1000;
+    }
+
+    public long getTimeSinceFinish() {
+        return (System.currentTimeMillis() - timeOfFinish)/1000;
     }
 
     public int getViewIdx() {

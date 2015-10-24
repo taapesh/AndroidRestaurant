@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.taapesh.androidrestaurant.R;
+import com.example.taapesh.androidrestaurant.util.CustomActionBar;
 
 public class TipRatingReviewActivity extends AppCompatActivity {
 
@@ -13,6 +14,7 @@ public class TipRatingReviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tip_rating_review);
+        CustomActionBar.setupActionBar(getSupportActionBar(), R.string.placeholder, R.layout.custom_action_bar);
     }
 
     @Override

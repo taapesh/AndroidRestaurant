@@ -4,17 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.example.taapesh.androidrestaurant.util.CustomActionBar;
 import com.example.taapesh.androidrestaurant.util.LoginRegisterHelper;
 import com.example.taapesh.androidrestaurant.util.PreferenceManager;
 import com.example.taapesh.androidrestaurant.R;
@@ -36,21 +33,10 @@ public class UserRegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registration);
+        CustomActionBar.setupActionBar(getSupportActionBar(), R.string.title_register, R.layout.custom_action_bar);
 
         sharedPreferences = getSharedPreferences(PreferenceManager.MY_PREFERENCES, Context.MODE_PRIVATE);
 
-        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setCustomView(R.layout.custom_action_bar);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(false);
-        View v = actionBar.getCustomView();
-        TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText(R.string.title_register);
-
-        // Get registration fields
         firstNameField = (EditText) findViewById(R.id.registerFirstName);
         lastNameField = (EditText) findViewById(R.id.registerLastName);
         emailField = (EditText) findViewById(R.id.registerEmail);
@@ -73,28 +59,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_user_registration, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     class RegisterInBackground extends AsyncTask<String, Void, JSONObject> {
 
         protected JSONObject doInBackground(String... fields) {
@@ -105,8 +69,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
             String email = fields[3];
             String password = fields[4];
 
-            LoginRegisterHelper loginRegisterHelper = new LoginRegisterHelper();
-            return loginRegisterHelper.tryRegister(firstName, lastName, phoneNumber, email, password);
+            return LoginRegisterHelper.tryRegister(firstName, lastName, phoneNumber, email, password);
         }
 
         protected void onPostExecute(JSONObject registerResult) {

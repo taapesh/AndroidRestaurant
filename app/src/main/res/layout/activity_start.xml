@@ -15,20 +15,21 @@
         android:gravity="center|bottom">
 
         <Button
-            android:id="@+id/goToLoginButton"
+            android:id="@+id/loginBtn"
             android:layout_width="fill_parent"
             android:layout_height="65dp"
             android:layout_weight="0.5"
-            android:text="Sign In"
+            android:text="@string/sign_in_btn"
             android:layout_marginRight="-3dp"/>
 
         <Button
-            android:id="@+id/goToRegistrationButton"
+            android:id="@+id/registerBtn"
             android:layout_width="fill_parent"
             android:layout_height="65dp"
             android:layout_weight="0.5"
-            android:text="Register"
+            android:text="@string/register_btn"
             android:layout_marginLeft="-3dp"/>
+
     </LinearLayout>
 </LinearLayout>
 

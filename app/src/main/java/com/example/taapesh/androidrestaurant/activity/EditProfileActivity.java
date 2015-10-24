@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.taapesh.androidrestaurant.R;
+import com.example.taapesh.androidrestaurant.util.CustomActionBar;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -15,17 +16,7 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-
-        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setCustomView(R.layout.custom_action_bar);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(false);
-        View v = actionBar.getCustomView();
-        TextView actionBarText = (TextView) v.findViewById(R.id.actionBarTitle);
-        actionBarText.setText(R.string.title_edit_profile);
+        CustomActionBar.setupActionBar(getSupportActionBar(), R.string.title_edit_profile, R.layout.custom_action_bar);
     }
 
     @Override

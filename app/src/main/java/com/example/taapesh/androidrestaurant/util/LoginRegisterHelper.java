@@ -25,7 +25,7 @@ public class LoginRegisterHelper  {
     private static final int CONNECTION_TIMEOUT = 7;
     private static final int DATARETRIEVAL_TIMEOUT = 7;
 
-    public JSONObject tryLogin(String email, String password) {
+    public static JSONObject tryLogin(String email, String password) {
         HttpURLConnection getTokenConn = null;
         HttpURLConnection getUserConn = null;
 
@@ -119,7 +119,7 @@ public class LoginRegisterHelper  {
         return loginReturn;
     }
 
-    public JSONObject tryRegister(String firstName, String lastName, String phoneNumber, String email, String password) {
+    public static JSONObject tryRegister(String firstName, String lastName, String phoneNumber, String email, String password) {
         Exception _e = null;
         HttpURLConnection registerConn = null;
         JSONObject registerReturn = new JSONObject();
@@ -199,7 +199,7 @@ public class LoginRegisterHelper  {
         return registerReturn;
     }
 
-    private JSONObject readInput(HttpURLConnection conn) throws IOException, JSONException {
+    private static JSONObject readInput(HttpURLConnection conn) throws IOException, JSONException {
         // Create JSON object from response content
         InputStream is;
         if (conn.getResponseCode() / 100 == 2) {

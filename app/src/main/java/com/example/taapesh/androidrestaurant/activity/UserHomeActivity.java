@@ -11,28 +11,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.taapesh.androidrestaurant.util.CustomActionBar;
 import com.example.taapesh.androidrestaurant.util.PreferenceManager;
 import com.example.taapesh.androidrestaurant.R;
 
 public class UserHomeActivity extends AppCompatActivity {
 
-    private static DrawerLayout mDrawerLayout;
+    private static DrawerLayout drawerLayout;
     private static View menuToggleArea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
+        CustomActionBar.setupActionBar(getSupportActionBar(), -1, R.layout.user_home_action_bar);
 
-        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setCustomView(R.layout.user_home_action_bar);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(false);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        assert mDrawerLayout != null;
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        assert drawerLayout != null;
         menuToggleArea = findViewById(R.id.menuToggleArea);
 
         menuToggleArea.setOnClickListener(new View.OnClickListener() {
@@ -123,11 +119,11 @@ public class UserHomeActivity extends AppCompatActivity {
     }
 
     private void toggleDrawer() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
             //menuToggleIcon.setImageResource(R.drawable.menu_24);
         } else {
-            mDrawerLayout.openDrawer(GravityCompat.START);
+            drawerLayout.openDrawer(GravityCompat.START);
             //menuToggleIcon.setImageResource(R.drawable.left_arrow_24);
         }
     }
