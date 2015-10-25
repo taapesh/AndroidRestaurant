@@ -21,6 +21,7 @@ public class RestHelper {
     private static final String TABLES_ENDPOINT = "http://taapesh.pythonanywhere.com/tables/";
     private static final String SERVER_TABLES_ENDPOINT = "http://taapesh.pythonanywhere.com/servertables/";
     private static final String REQUEST_ENDPOINT = "http://taapesh.pythonanywhere.com/makerequest/";
+    private static final String TABLE_ADDR_ENDPOINT = "http://taapesh.pythonanywhere.com/gettableaddr/";
 
     public static JSONArray getServerTables(int serverId) {
         HttpURLConnection getTablesConn = null;
@@ -67,8 +68,8 @@ public class RestHelper {
 
         try {
             String data = URLEncoder.encode("tableNum", "UTF-8") + "=" + URLEncoder.encode(""+tableNum, "UTF-8");
-            data += URLEncoder.encode("addr", "UTF-8") + "=" + URLEncoder.encode(addr, "UTF-8");
-            URL url = new URL(TABLES_ENDPOINT);
+            //data += URLEncoder.encode("addr", "UTF-8") + "=" + URLEncoder.encode(addr, "UTF-8");
+            URL url = new URL(TABLE_ADDR_ENDPOINT);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
@@ -76,6 +77,7 @@ public class RestHelper {
             wr.write(data);
             wr.flush();
             conn.connect();
+            wr.close();
             JSONObject result = readInputObject(conn);
             Log.i("CreateOrJoinResult", result.toString());
 
@@ -87,14 +89,9 @@ public class RestHelper {
                 // Create the table
             }
         }
-        catch (JSONException e) {
+        catch (Exception e) {
             _e = e;
-        }
-        catch (MalformedURLException e) {
-            _e = e;
-        }
-        catch (IOException e) {
-            _e = e;
+            Log.i("CreateOrJoinException", e.toString());
         }
         return null;
     }

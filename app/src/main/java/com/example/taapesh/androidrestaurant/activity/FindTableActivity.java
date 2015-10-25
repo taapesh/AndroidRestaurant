@@ -79,7 +79,7 @@ public class FindTableActivity extends AppCompatActivity {
                 startActivity(goToTable);
             }
             catch (Exception e) {
-                Log.i("JSONException", e.toString());
+                Log.i("Exception", e.toString());
             }
         }
     }
