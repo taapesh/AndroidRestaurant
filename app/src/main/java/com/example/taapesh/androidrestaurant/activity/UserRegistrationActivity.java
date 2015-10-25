@@ -81,7 +81,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
                     // Registration success, set user details in preferences
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(PreferenceManager.TOKEN, registerResult.getString("token"));
-                    editor.putInt(PreferenceManager.USER_ID, registerResult.getInt("id"));
+                    editor.putString(PreferenceManager.USER_ID, registerResult.getString("id"));
                     editor.putString(PreferenceManager.FIRST_NAME, registerResult.getString("firstName"));
                     editor.putString(PreferenceManager.LAST_NAME, registerResult.getString("lastName"));
                     editor.putString(PreferenceManager.EMAIL, registerResult.getString("email"));

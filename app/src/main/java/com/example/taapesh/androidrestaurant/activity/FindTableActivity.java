@@ -73,7 +73,7 @@ public class FindTableActivity extends AppCompatActivity {
         protected JSONObject doInBackground(String... fields) {
             String firstName = PreferenceManager.getPreference(FindTableActivity.this, PreferenceManager.FIRST_NAME);
             String lastName = PreferenceManager.getPreference(FindTableActivity.this, PreferenceManager.LAST_NAME);
-            String userId = PreferenceManager.getPreference(FindTableActivity.this, PreferenceManager.USER_ID);
+            String userId = PreferenceManager.getPreference(FindTableActivity.this, PreferenceManager.USER_ID)  ;
             String email = PreferenceManager.getPreference(FindTableActivity.this, PreferenceManager.EMAIL);
 
             return RestHelper.createOrJoinTable(userId, firstName, lastName, email, addr, tableNum);

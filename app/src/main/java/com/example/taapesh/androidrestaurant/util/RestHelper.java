@@ -23,6 +23,9 @@ public class RestHelper {
     private static final String TABLE_ADDR_ENDPOINT = "http://taapesh.pythonanywhere.com/gettableaddr/";
     private static final String JOIN_TABLE_ENDPOINT = "http://taapesh.pythonanywhere.com/createtable/";
 
+    // errors
+    private static final String TABLE_DNE = "-1";
+
     public static JSONArray getServerTables(int serverId) {
         HttpURLConnection conn = null;
         Exception _e = null;
@@ -54,29 +57,37 @@ public class RestHelper {
     public static JSONObject createOrJoinTable(String userId, String firstName, String lastName, String email, String addr, int tableNum) {
         HttpURLConnection conn = null;
         Exception _e;
+        JSONObject result = null;
 
         try {
             String data = URLEncoder.encode("tableNum", "UTF-8") + "=" + URLEncoder.encode(""+tableNum, "UTF-8");
             data += "&" + URLEncoder.encode("addr", "UTF-8") + "=" + URLEncoder.encode(addr, "UTF-8");
             conn = setupPostRequest(data, TABLE_ADDR_ENDPOINT);
-            JSONObject result = readInputObject(conn);
-            Log.i("CreateOrJoinResult", result.toString());
+            result = readInputObject(conn);
+            if (result != null) {
+                Log.i("CreateOrJoinResult", result.toString());
 
-            if (result.has("ownerId")) {
-                joinTable(result);
-                // Return the table that already exists
-                return result;
+                if (result.has("ownerId")) {
+                    joinTable(result);
+                    // Return the table that already exists
+                    return result;
+                }
+                else if (result.has("error")) {
+                    if (result.get("error").equals(TABLE_DNE)) {
+                        // Connect to a server, then create the table
+                        // int serverId = connectToServer()
+                        JSONObject createResult = createTable(userId, testServerId, firstName, lastName, email, tableNum, addr);
+                        return createResult;
+                    }
+                }
             }
             else {
-                // Connect to a server, then create the table
-                // int serverId = connectToServer()
-                JSONObject createResult = createTable(userId, testServerId, firstName, lastName, email, tableNum, addr);
-                return createResult;
+                // Blank JSON response
             }
         }
         catch (Exception e) {
             _e = e;
-            Log.i("CreateOrJoinException", e.toString());
+            e.printStackTrace();
         }
         finally {
             if (conn != null) {
@@ -108,7 +119,7 @@ public class RestHelper {
 
             URL url = new URL(TABLES_ENDPOINT);
             conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("PUT");
+            conn.setRequestMethod("POST");
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
@@ -183,6 +194,9 @@ public class RestHelper {
         }
         rd.close();
 
+        if (sb.length() == 0) {
+            return null;
+        }
         return new JSONArray(sb.toString());
     }
 
@@ -202,7 +216,9 @@ public class RestHelper {
             sb.append("\n");
         }
         rd.close();
-
+        if (sb.length() == 0) {
+            return null;
+        }
         return new JSONObject(sb.toString());
     }
 
