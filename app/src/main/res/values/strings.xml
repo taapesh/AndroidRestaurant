@@ -20,5 +20,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="placeholder">Placeholder</string>
+    <string name="title_activity_menu_categories">MenuCategoriesActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

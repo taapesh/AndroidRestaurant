@@ -126,11 +126,33 @@ public class LoginRegisterHelper  {
 
         try {
             // Encode data
-            String data = URLEncoder.encode("first_name", "UTF-8") + "=" + URLEncoder.encode(firstName, "UTF-8");
-            data += "&" + URLEncoder.encode("last_name", "UTF-8") + "=" + URLEncoder.encode(lastName, "UTF-8");
-            data += "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-            data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
-            data += "&" + URLEncoder.encode("phone_number", "UTF-8") + "=" + URLEncoder.encode(phoneNumber, "UTF-8");
+            StringBuilder data = new StringBuilder(URLEncoder.encode("email", "UTF-8"));
+            data.append("=");
+            data.append(URLEncoder.encode(email, "UTF-8"));
+
+            data.append("&");
+
+            data.append(URLEncoder.encode("first_name", "UTF-8"));
+            data.append("=");
+            data.append(URLEncoder.encode(firstName, "UTF-8"));
+
+            data.append("&");
+
+            data.append(URLEncoder.encode("last_name", "UTF-8"));
+            data.append("=");
+            data.append(URLEncoder.encode(lastName, "UTF-8"));
+
+            data.append("&");
+
+            data.append(URLEncoder.encode("password", "UTF-8"));
+            data.append("=");
+            data.append(URLEncoder.encode(password, "UTF-8"));
+
+            data.append("&");
+
+            data.append(URLEncoder.encode("phone_number", "UTF-8"));
+            data.append("=");
+            data.append(URLEncoder.encode(phoneNumber, "UTF-8"));
 
             // Setup Http POST request with data
             URL url = new URL(REGISTER_ENDPOINT);
@@ -138,7 +160,7 @@ public class LoginRegisterHelper  {
             registerConn.setRequestMethod("POST");
             registerConn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(registerConn.getOutputStream());
-            wr.write(data);
+            wr.write(data.toString());
             wr.flush();
             registerConn.connect();
             wr.close();
@@ -150,6 +172,7 @@ public class LoginRegisterHelper  {
                 // Registration succeeded, get user info and obtain auth token
                 registerReturn.put("result", REGISTER_SUCCESS);
                 JSONObject loginResult = tryLogin(email, password);
+                Log.i("LoginResult", loginResult.toString());
                 int result = (int)loginResult.get("result");
 
                 if (result == LOGIN_SUCCESS) {

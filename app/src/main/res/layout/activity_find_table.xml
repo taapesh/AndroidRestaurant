@@ -18,10 +18,21 @@
         android:id="@+id/findTableRoot">
 
         <EditText
-            android:id="@+id/serverCodeField"
+            android:id="@+id/findRestaurantField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Your Server's Code"
+            android:hint="Find your restaurant"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginBottom="20dp"/>
+
+        <EditText
+            android:id="@+id/tableNumberField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Table Number"
             android:maxLines="1"
             android:singleLine="true"
             android:layout_marginLeft="35dp"
@@ -34,44 +45,7 @@
             android:text="Get Served!"
             android:layout_marginRight="35dp"
             android:layout_marginLeft="35dp"
-            android:id="@+id/startServiceButton"/>
+            android:id="@+id/startTableBtn"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:gravity="center_horizontal|center_vertical"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp">
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OR"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp" />
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"/>
-        </LinearLayout>
-
-
-        <Button
-            android:id="@+id/scanCodeButton"
-            android:layout_width="135dp"
-            android:layout_height="65dp"
-            android:text="Scan Code" />
     </LinearLayout>
 </ScrollView>

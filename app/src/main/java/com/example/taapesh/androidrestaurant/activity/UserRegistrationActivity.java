@@ -78,7 +78,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
             try {
                 int result = (int) registerResult.get("result");
                 if (result == LoginRegisterHelper.REGISTER_SUCCESS) {
-                    Log.i("REGISTER_TEST", "LOL HELLO");
                     // Registration success, set user details in preferences
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(PreferenceManager.TOKEN, registerResult.getString("token"));

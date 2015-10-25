@@ -5,12 +5,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.taapesh.androidrestaurant.R;
 import com.example.taapesh.androidrestaurant.util.CustomActionBar;
 
-public class EatingActivity extends AppCompatActivity {
+public class TableActivity extends AppCompatActivity {
+
+    private Button orderBtn;
+    private Button requestBtn;
+    private Button finishBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +23,9 @@ public class EatingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_eating);
         CustomActionBar.setupActionBar(getSupportActionBar(), R.string.title_eating, R.layout.custom_action_bar);
 
+        orderBtn = (Button)findViewById(R.id.orderBtn);
+        requestBtn = (Button)findViewById(R.id.requestBtn);
+        finishBtn = (Button)findViewById(R.id.finishBtn);
     }
 
     @Override

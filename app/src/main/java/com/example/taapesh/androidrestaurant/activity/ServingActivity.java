@@ -11,16 +11,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-// PubNub imports
 import com.example.taapesh.androidrestaurant.R;
 import com.example.taapesh.androidrestaurant.object.Table;
 import com.example.taapesh.androidrestaurant.util.CustomActionBar;
 import com.example.taapesh.androidrestaurant.util.RestHelper;
+
+// PubNub imports
 import com.pubnub.api.Pubnub;
 import com.pubnub.api.Callback;
 import com.pubnub.api.PubnubError;
@@ -28,8 +27,6 @@ import com.pubnub.api.PubnubException;
 
 // Java imports
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,15 +44,9 @@ public class ServingActivity extends AppCompatActivity {
     private static final int PARTY_TITLE = 0;
     private static final int PARTY_SIZE = 1;
 
-    // Message types
-    private static final int CONNECT = 1;
-    private static final int JOIN = 2;
-    private static final int REQUEST = 3;
-    private static final int FINISHED = 4;
-
-    ArrayList<Table> activeTableStack = new ArrayList<>();
-    ArrayList<Table> requestTableStack = new ArrayList<>();
-    ArrayList<Table> finishedTableStack = new ArrayList<>();
+    private ArrayList<Table> activeTableStack = new ArrayList<>();
+    private ArrayList<Table> requestTableStack = new ArrayList<>();
+    private ArrayList<Table> finishedTableStack = new ArrayList<>();
 
     CardView[] activeTableCardViews = new CardView[MAX_TABLES];
     CardView[] finishedTableCardViews = new CardView[MAX_TABLES];
@@ -66,7 +57,6 @@ public class ServingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Log.i("RESUME", "Resuming activity");
         //String testServerId = PreferenceManager.getPreference(ServingActivity.this, PreferenceManager.USER_ID);
 
         // Initialize Pubnub
@@ -99,7 +89,6 @@ public class ServingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Log.i("CREATE", "Creating activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serving);
         CustomActionBar.setupActionBar(getSupportActionBar(), R.string.title_serving, R.layout.custom_action_bar);
@@ -110,6 +99,8 @@ public class ServingActivity extends AppCompatActivity {
         for(int i = 0; i < MAX_TABLES; ++i) {
             activeTableCardViews[i] = (CardView) activeTablesRoot.getChildAt(i);
             finishedTableCardViews[i] = (CardView) finishedTablesRoot.getChildAt(i);
+            activeTableCardViews[i].setVisibility(View.GONE);
+            finishedTableCardViews[i].setVisibility(View.GONE);
         }
     }
 
@@ -143,13 +134,11 @@ public class ServingActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        //Log.i("STOP", "Stopping activity");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        //Log.i("PAUSE", "Pausing activity");
         pubnub.unsubscribe("woodhouse");
     }
 
@@ -163,10 +152,11 @@ public class ServingActivity extends AppCompatActivity {
             // active tables ordered by earliest creation time first
             // request tables ordered by earliest request first
             // finished tables ordered by earliest finish time first
-            resetTables();
-            int len = tablesResult.length();
-            for (int i = 0; i < len; i++) {
-                try {
+            try {
+                int len = tablesResult.length();
+                resetTables();
+
+                for (int i = 0; i < len; i++) {
                     JSONObject tableData = tablesResult.getJSONObject(i);
                     //todo: insert ordered into the table stacks
                     Table table = new Table(tableData);
@@ -179,14 +169,13 @@ public class ServingActivity extends AppCompatActivity {
                     else {
                         activeTableStack.add(table);
                     }
+                }
 
-                    runOnUiThread(new DisplayTables());
-                }
-                catch (JSONException e) {
-                    Log.i("JSONException", e.toString());
-                }
+                runOnUiThread(new DisplayTables());
             }
-
+            catch (JSONException e) {
+                Log.i("JSONException", e.toString());
+            }
         }
     }
 
@@ -239,7 +228,6 @@ public class ServingActivity extends AppCompatActivity {
     }
 
     private void setOnClick(final View v, final Table table) {
-        // Set action for clicking on a finished table view
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
