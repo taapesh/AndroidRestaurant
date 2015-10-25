@@ -85,7 +85,7 @@ public class UserLoginActivity extends AppCompatActivity {
                     // Login success, set user details in preferences
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(PreferenceManager.TOKEN, loginResult.getString("token"));
-                    editor.putInt(PreferenceManager.USER_ID, loginResult.getInt("id"));
+                    editor.putString(PreferenceManager.USER_ID, loginResult.getString("id"));
                     editor.putString(PreferenceManager.FIRST_NAME, loginResult.getString("firstName"));
                     editor.putString(PreferenceManager.LAST_NAME, loginResult.getString("lastName"));
                     editor.putString(PreferenceManager.EMAIL, loginResult.getString("email"));

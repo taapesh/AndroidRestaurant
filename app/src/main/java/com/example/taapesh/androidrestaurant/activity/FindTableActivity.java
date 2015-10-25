@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.taapesh.androidrestaurant.R;
 import com.example.taapesh.androidrestaurant.object.Table;
 import com.example.taapesh.androidrestaurant.util.CustomActionBar;
+import com.example.taapesh.androidrestaurant.util.PreferenceManager;
 import com.example.taapesh.androidrestaurant.util.RestHelper;
 
 import org.json.JSONArray;
@@ -25,8 +26,8 @@ public class FindTableActivity extends AppCompatActivity {
     private static String[] sampleServers = {"Bob", "Alice", "John"};
     private Button startTableBtn;
     private static final int testUserId = 2;
-    private static final String addr = "1234 Restaurant St.";
-    private static final int tableNum = 1;
+    private static final String addr = "1234_Restaurant_St.";
+    private static final int tableNum = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,12 @@ public class FindTableActivity extends AppCompatActivity {
     class CreateOrJoinTable extends AsyncTask<String, Void, JSONObject> {
 
         protected JSONObject doInBackground(String... fields) {
-            return RestHelper.createOrJoinTable(addr, tableNum);
+            String firstName = PreferenceManager.getPreference(FindTableActivity.this, PreferenceManager.FIRST_NAME);
+            String lastName = PreferenceManager.getPreference(FindTableActivity.this, PreferenceManager.LAST_NAME);
+            String userId = PreferenceManager.getPreference(FindTableActivity.this, PreferenceManager.USER_ID);
+            String email = PreferenceManager.getPreference(FindTableActivity.this, PreferenceManager.EMAIL);
+
+            return RestHelper.createOrJoinTable(userId, firstName, lastName, email, addr, tableNum);
         }
 
         protected void onPostExecute(JSONObject tableResult) {
