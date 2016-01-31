@@ -28,10 +28,11 @@ import okhttp3.Response;
 
 public class UserLoginActivity extends AppCompatActivity {
     private static final String LOGIN_ENDPOINT = "http://safe-springs-46272.herokuapp.com/login/";
-    private static final String TEST_EMAIL = "test@gmail.com";
-    private static final String TEST_PASSWORD = "12345";
     private static EditText loginEmailField;
     private static EditText loginPasswordField;
+
+    private static final String TEST_EMAIL = "test@gmail.com";
+    private static final String TEST_PASSWORD = "12345";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class UserLoginActivity extends AppCompatActivity {
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: validate input data before making HTTP request
+                // TODO: validate input data before making request
                 String email = loginEmailField.getText().toString();
                 String password = loginPasswordField.getText().toString();
 
@@ -95,6 +96,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 try {
                     String responseData = response.body().string();
                     JSONObject json = new JSONObject(responseData);
+                    // TODO: validate response
                     SharedPreferences sharedPreferences = getSharedPreferences(PreferenceManager.MY_PREFERENCES, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(PreferenceManager.TOKEN,  json.getString("auth_token"));
