@@ -26,7 +26,6 @@ public class UserHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_home);
         CustomActionBar.setupActionBar(getSupportActionBar(), -1, R.layout.user_home_action_bar);
 
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         assert drawerLayout != null;
         menuToggleArea = findViewById(R.id.menuToggleArea);

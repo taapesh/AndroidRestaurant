@@ -15,13 +15,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class RestHelper {
-
     private static int testServerId = 4;
-    private static final String TABLES_ENDPOINT = "http://taapesh.pythonanywhere.com/tables/";
-    private static final String SERVER_TABLES_ENDPOINT = "http://taapesh.pythonanywhere.com/servertables/";
-    private static final String REQUEST_ENDPOINT = "http://taapesh.pythonanywhere.com/makerequest/";
-    private static final String TABLE_ADDR_ENDPOINT = "http://taapesh.pythonanywhere.com/gettableaddr/";
-    private static final String JOIN_TABLE_ENDPOINT = "http://taapesh.pythonanywhere.com/createtable/";
+    private static final String TABLES_ENDPOINT = "http://safe-springs-46272.herokuapp.com/tables/";
+    private static final String CREATE_TABLE_ENDPOINT = "http://safe-springs-46272.herokuapp.com/createtable/";
 
     // errors
     private static final String TABLE_DNE = "-1";
@@ -32,7 +28,7 @@ public class RestHelper {
 
         try {
             String data = URLEncoder.encode("serverId", "UTF-8") + "=" + URLEncoder.encode(""+serverId, "UTF-8");
-            conn = setupPostRequest(data, SERVER_TABLES_ENDPOINT);
+            conn = setupPostRequest(data, "");//SERVER_TABLES_ENDPOINT);
             JSONArray tablesResult = readInputArray(conn);
             //Log.i("TABLES", tablesResult.toString());
             return tablesResult;
@@ -62,7 +58,7 @@ public class RestHelper {
         try {
             String data = URLEncoder.encode("tableNum", "UTF-8") + "=" + URLEncoder.encode(""+tableNum, "UTF-8");
             data += "&" + URLEncoder.encode("addr", "UTF-8") + "=" + URLEncoder.encode(addr, "UTF-8");
-            conn = setupPostRequest(data, TABLE_ADDR_ENDPOINT);
+            conn = setupPostRequest(data, "");//, TABLE_ADDR_ENDPOINT);
             result = readInputObject(conn);
             if (result != null) {
                 Log.i("CreateOrJoinResult", result.toString());
@@ -154,7 +150,7 @@ public class RestHelper {
         Exception _e = null;
 
         try {
-            conn = setupGetRequest(REQUEST_ENDPOINT + ownerId);
+            conn = setupGetRequest("");//REQUEST_ENDPOINT + ownerId);
             JSONObject result = readInputObject(conn);
             Log.i("RequestResult", result.toString());
             return result;

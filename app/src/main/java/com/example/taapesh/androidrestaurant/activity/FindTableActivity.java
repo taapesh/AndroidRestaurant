@@ -22,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class FindTableActivity extends AppCompatActivity {
-
     private static String[] sampleServers = {"Bob", "Alice", "John"};
     private Button startTableBtn;
     private static final int testUserId = 2;
