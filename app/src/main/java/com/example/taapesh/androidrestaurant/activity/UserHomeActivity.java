@@ -1,6 +1,8 @@
 package com.example.taapesh.androidrestaurant.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -90,9 +92,9 @@ public class UserHomeActivity extends AppCompatActivity {
                 startActivity(goToJoinTable);
             }
         });
-
-        String firstName = PreferenceManager.getPreference(this, PreferenceManager.FIRST_NAME);
-        Toast.makeText(getApplicationContext(), "Welcome, " + firstName, Toast.LENGTH_LONG).show();
+        SharedPreferences prefs = this.getSharedPreferences(PreferenceManager.MY_PREFERENCES, Context.MODE_PRIVATE);
+        String firstName = prefs.getString(PreferenceManager.FIRST_NAME, "");
+        Toast.makeText(this, "Welcome, " + firstName + "!", Toast.LENGTH_LONG).show();
     }
 
     @Override
