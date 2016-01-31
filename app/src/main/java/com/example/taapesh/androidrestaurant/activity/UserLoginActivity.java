@@ -1,6 +1,5 @@
 package com.example.taapesh.androidrestaurant.activity;
 
-// Android imports
 import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,11 +14,9 @@ import android.text.Html;
 import com.example.taapesh.androidrestaurant.util.CustomActionBar;
 import com.example.taapesh.androidrestaurant.util.PreferenceManager;
 import com.example.taapesh.androidrestaurant.R;
-
 import org.json.JSONObject;
 import org.json.JSONException;
 import java.io.IOException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
