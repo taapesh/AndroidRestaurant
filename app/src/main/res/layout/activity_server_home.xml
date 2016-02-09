@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sideMenuLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_activity_bg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_logo">
+        </include>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@+id/toolbar">
+
+            <Button
+                android:id="@+id/startServingBtn"
+                android:layout_width="185dp"
+                android:layout_height="50dp"
+                android:text="Start Serving"
+                android:background="@color/main_btn_bg"
+                android:textColor="@color/main_btn_text"
+                android:textSize="14sp"
+                android:textAllCaps="false"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <include
+        layout="@layout/side_menu_server_home">
+    </include>
+
+</android.support.v4.widget.DrawerLayout>

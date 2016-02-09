@@ -1,8 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -11,24 +9,28 @@
         android:layout_width="fill_parent"
         android:orientation="horizontal"
         android:layout_height="match_parent"
-        android:weightSum="1"
+        android:weightSum="2"
         android:gravity="center|bottom">
 
         <Button
             android:id="@+id/loginBtn"
             android:layout_width="fill_parent"
             android:layout_height="65dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:text="@string/sign_in_btn"
-            android:layout_marginRight="-3dp"/>
+            android:background="@color/main_btn_bg"
+            android:textColor="@color/main_btn_text"
+            android:layout_marginRight="1dp"/>
 
         <Button
             android:id="@+id/registerBtn"
             android:layout_width="fill_parent"
             android:layout_height="65dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:text="@string/register_btn"
-            android:layout_marginLeft="-3dp"/>
+            android:background="@color/main_btn_bg"
+            android:textColor="@color/main_btn_text"
+            android:layout_marginLeft="1dp"/>
 
     </LinearLayout>
 </LinearLayout>

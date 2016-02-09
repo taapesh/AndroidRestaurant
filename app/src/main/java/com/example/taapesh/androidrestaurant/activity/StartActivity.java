@@ -4,13 +4,22 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.content.Intent;
+
 import com.example.taapesh.androidrestaurant.R;
+import com.example.taapesh.androidrestaurant.util.NavManager;
+import com.example.taapesh.androidrestaurant.util.PreferencesManager;
+
 
 public class StartActivity extends Activity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PreferencesManager prefs = new PreferencesManager(this);
+        final String authToken = prefs.getToken();
+        if (authToken != null) {
+            // TODO: Check if token is valid, determine where to go from there
+            new NavManager(this).goToUserHome();
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
@@ -20,16 +29,14 @@ public class StartActivity extends Activity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goToLogin = new Intent(StartActivity.this, UserLoginActivity.class);
-                startActivity(goToLogin);
+                new NavManager(StartActivity.this).goToUserLogin();
             }
         });
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goToRegistration = new Intent(StartActivity.this, UserRegistrationActivity.class);
-                startActivity(goToRegistration);
+                new NavManager(StartActivity.this).goToUserRegistration();
             }
         });
     }

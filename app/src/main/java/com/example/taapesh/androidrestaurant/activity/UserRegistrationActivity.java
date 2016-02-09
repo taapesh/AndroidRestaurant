@@ -1,22 +1,21 @@
 package com.example.taapesh.androidrestaurant.activity;
 
-import android.util.Log;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.taapesh.androidrestaurant.util.CustomActionBar;
-import com.example.taapesh.androidrestaurant.util.PreferenceManager;
+import com.example.taapesh.androidrestaurant.util.ActivityCode;
+import com.example.taapesh.androidrestaurant.util.NavManager;
+import com.example.taapesh.androidrestaurant.util.PreferencesManager;
 import com.example.taapesh.androidrestaurant.R;
+import com.example.taapesh.androidrestaurant.util.ToolbarManager;
+
 import org.json.JSONObject;
 import org.json.JSONException;
-
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -29,6 +28,7 @@ import okhttp3.Response;
 
 
 public class UserRegistrationActivity extends AppCompatActivity {
+
     private static final String REGISTER_ENDPOINT = "http://safe-springs-46272.herokuapp.com/register/";
     private static EditText firstNameField;
     private static EditText lastNameField;
@@ -40,12 +40,14 @@ public class UserRegistrationActivity extends AppCompatActivity {
     private static final String TEST_FIRST_NAME = "John";
     private static final String TEST_LAST_NAME = "Doe";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registration);
-        CustomActionBar.setupActionBar(getSupportActionBar(), R.string.title_register, R.layout.custom_action_bar);
+
+        new ToolbarManager(this).setupGoBackToolbar(
+                ToolbarManager.REGISTRATION_ACTIVITY_TITLE, ActivityCode.REGISTRATION_ACTIVITY);
+
         firstNameField = (EditText) findViewById(R.id.registerFirstName);
         lastNameField = (EditText) findViewById(R.id.registerLastName);
         emailField = (EditText) findViewById(R.id.registerEmail);
@@ -105,22 +107,11 @@ public class UserRegistrationActivity extends AppCompatActivity {
                 }
                 try {
                     String responseData = response.body().string();
-                    JSONObject json = new JSONObject(responseData);
-
-                    SharedPreferences sharedPreferences = getSharedPreferences(PreferenceManager.MY_PREFERENCES, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(PreferenceManager.TOKEN, json.getString("auth_token"));
-                    editor.putString(PreferenceManager.USER_ID, json.getString("user_id"));
-                    editor.putString(PreferenceManager.EMAIL, json.getString("email"));
-                    editor.putString(PreferenceManager.FIRST_NAME, json.getString("first_name"));
-                    editor.putString(PreferenceManager.LAST_NAME, json.getString("last_name"));
-                    editor.apply();
-
-                    Intent goToUserHome = new Intent(UserRegistrationActivity.this, UserHomeActivity.class);
-                    finish();
-                    startActivity(goToUserHome);
+                    JSONObject userDetails = new JSONObject(responseData);
+                    new PreferencesManager(UserRegistrationActivity.this).setUserDetails(userDetails);
+                    new NavManager(UserRegistrationActivity.this).goToUserHome();
                 } catch (JSONException e) {
-                    // pass
+                    Log.d("DEBUG", "Unable to parse user info");
                 }
             }
         });

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="match_parent"
+    android:background="@color/menu_bg_color"
+    android:orientation="vertical"
+    android:layout_gravity="left"
+    android:id="@+id/sideMenuContent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@color/profile_bg_color"
+        android:id="@+id/profileSection">
+
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_account_circle"
+            android:tint="@color/menu_text_color"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:id="@+id/myNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Name"
+            android:textSize="16sp"
+            android:textColor="@color/menu_text_color"
+            android:textStyle="normal"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/profileImage"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/paymentMenuOption">
+
+        <ImageView
+            android:id="@+id/paymentMenuIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:tint="@color/menu_icon_color"
+            android:src="@drawable/ic_credit_card" />
+
+        <TextView
+            android:id="@+id/paymentMenuTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="PAYMENT"
+            android:textColor="@color/menu_text_color"
+            android:textStyle="normal"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/paymentMenuIcon"
+            android:layout_marginLeft="20dp"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/receiptsMenuOption">
+
+        <ImageView
+            android:id="@+id/receiptsMenuIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:tint="@color/menu_icon_color"
+            android:src="@drawable/ic_receipt" />
+
+        <TextView
+            android:id="@+id/receiptsMenuTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="RECEIPTS"
+            android:textStyle="normal"
+            android:textColor="@color/menu_text_color"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/receiptsMenuIcon"
+            android:layout_marginLeft="20dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/settingsMenuOption">
+
+        <ImageView
+            android:id="@+id/settingsMenuIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:tint="@color/menu_icon_color"
+            android:src="@drawable/ic_table_service" />
+
+        <TextView
+            android:id="@+id/settingsMenuTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="SETTINGS"
+            android:textStyle="normal"
+            android:textColor="@color/menu_text_color"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/settingsMenuIcon"
+            android:layout_marginLeft="20dp"/>
+    </RelativeLayout>
+
+</LinearLayout>

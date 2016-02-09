@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_id": "tablemate-7b93c",
+    "project_number": "159290410117",
+    "name": "Tablemate"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159290410117:android:c2c5a25bb1ea468c",
+        "client_id": "android:com.example.taapesh.androidrestaurant.activity",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.example.taapesh.androidrestaurant.activity"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159290410117:android:d2fd05222ec23b9a",
+        "client_id": "android:com.example.taapesh.androidrestaurant",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.example.taapesh.androidrestaurant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

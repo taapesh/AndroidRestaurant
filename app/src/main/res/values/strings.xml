@@ -1,9 +1,7 @@
 <resources>
-    <string name="app_name">Woodhouse</string>
-
+    <string name="app_name">Tablemate</string>
     <string name="sign_in_btn">Sign in</string>
     <string name="register_btn">Register</string>
-
     <string name="title_register">Register</string>
     <string name="title_login">Sign in</string>
     <string name="title_add_payment">Add Payment</string>
@@ -16,12 +14,8 @@
     <string name="title_payment">Payment</string>
     <string name="title_profile">Profile</string>
     <string name="title_serving">Serving</string>
-
     <string name="action_settings">Settings</string>
-
     <string name="placeholder">Placeholder</string>
     <string name="title_activity_menu_categories">MenuCategoriesActivity</string>
-
     <string name="hello_world">Hello world!</string>
-
 </resources>
