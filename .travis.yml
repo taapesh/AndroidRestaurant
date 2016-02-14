@@ -1,1 +1,21 @@
 language: android
+
+android:
+  components:
+    # latest version of the tools
+    - tools
+    - platform-tools
+    
+    # build tools version
+    - build-tools-22.0.1
+    
+    # The SDK Version
+    - android-23
+    
+    # Additional components
+    extra-android-support
+    extra-google-google_play_services
+    extra-google-m2repository
+    extra-android-m2repository
+    
+jdk: oraclejdk8
