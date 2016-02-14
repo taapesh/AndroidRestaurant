@@ -18,4 +18,10 @@
     <string name="placeholder">Placeholder</string>
     <string name="title_activity_menu_categories">MenuCategoriesActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_finish_and_pay">FinishAndPayActivity</string>
+
+    <string name="unlock_instructions">slide to pay</string>
+    <string name="unlock_locked">Locked</string>
+    <string name="unlock_unlocked">Unlocked</string>
+    <string name="unlock_thumb">Move this thumb</string>
 </resources>

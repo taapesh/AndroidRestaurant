@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.text.Html;
 
 import com.example.taapesh.androidrestaurant.util.ActivityCode;
+import com.example.taapesh.androidrestaurant.util.Endpoint;
 import com.example.taapesh.androidrestaurant.util.NavManager;
 import com.example.taapesh.androidrestaurant.util.PreferencesManager;
 import com.example.taapesh.androidrestaurant.R;
@@ -30,11 +31,8 @@ import okhttp3.Response;
 
 public class UserLoginActivity extends AppCompatActivity {
 
-    private static final String LOGIN_ENDPOINT = "http://safe-springs-46272.herokuapp.com/login/";
     private static EditText loginEmailField;
     private static EditText loginPasswordField;
-    private static final String TEST_EMAIL = "test@gmail.com";
-    private static final String TEST_PASSWORD = "12345";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +54,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 String password = loginPasswordField.getText().toString();
 
                 // Attempt login
-                tryLogin(TEST_EMAIL, TEST_PASSWORD);
+                tryLogin(Endpoint.TEST_EMAIL, Endpoint.TEST_PASSWORD);
             }
         });
 
@@ -81,7 +79,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url(LOGIN_ENDPOINT)
+                .url(Endpoint.LOGIN_ENDPOINT)
                 .post(formBody)
                 .build();
 

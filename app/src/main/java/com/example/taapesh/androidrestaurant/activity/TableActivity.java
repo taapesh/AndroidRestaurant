@@ -6,11 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.taapesh.androidrestaurant.R;
+import com.example.taapesh.androidrestaurant.util.Endpoint;
+import com.example.taapesh.androidrestaurant.util.NavManager;
 import com.example.taapesh.androidrestaurant.util.NetworkStateReceiver;
 import com.example.taapesh.androidrestaurant.util.NetworkStateReceiver.NetworkStateReceiverListener;
 import com.example.taapesh.androidrestaurant.util.NetworkStatus;
@@ -37,12 +40,6 @@ import okhttp3.Response;
 
 public class TableActivity extends AppCompatActivity implements NetworkStateReceiverListener {
 
-    private static final HttpUrl TABLE_ENDPOINT =
-            HttpUrl.parse("http://safe-springs-46272.herokuapp.com/get_table/");
-    private static final HttpUrl SERVER_ID_ENDPOINT =
-            HttpUrl.parse("http://safe-springs-46272.herokuapp.com/get_server_id/");
-    private static final HttpUrl TABLE_REQUEST_ENDPOINT =
-            HttpUrl.parse("http://safe-springs-46272.herokuapp.com/request_service/");
     private static final int TABLE_REQUEST_CODE = 1;
     private static final int TABLE_SERVICE_CODE = 2;
 
@@ -53,10 +50,16 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
     private static final String SUBSCRIBE_KEY = "sub-c-01429274-6938-11e5-a5be-02ee2ddab7fe";
     private Pubnub pubnub;
 
+    // From shared preferences
+    private PreferencesManager prefs;
+
+    private int userId;
     private String authToken;
     private String serverId;
-    private int userId;
     private String addressTableCombo;
+    private String serverName;
+    private String restaurantName;
+    private String restaurantAddress;
 
     private TextView restaurantNameText;
     private TextView serverNameText;
@@ -96,12 +99,20 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table);
         new ToolbarManager(this).setupTableToolbar(ToolbarManager.TABLE_ACTIVITY_TITLE);
-        setupWidgets();
-        PreferencesManager prefs = new PreferencesManager(this);
+
+        prefs = new PreferencesManager(this);
         userId = prefs.getUserId();
         authToken = prefs.getToken();
-        networkStatus = new NetworkStatus(this);
+        serverName = prefs.getServerName();
+        restaurantName = prefs.getRestaurantName();
+        restaurantAddress = prefs.getRestaurantAddress();
+        addressTableCombo = prefs.getAddrTableCombo();
+
+        setupWidgets();
+
         pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);
+
+        networkStatus = new NetworkStatus(this);
         networkStateReceiver = new NetworkStateReceiver(this);
         networkStateReceiver.addListener(this);
     }
@@ -110,7 +121,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
         final OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(SERVER_ID_ENDPOINT)
+                .url(Endpoint.SERVER_ID_ENDPOINT)
                 .addHeader("Authorization", "Token " + authToken)
                 .build();
 
@@ -174,7 +185,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
         final OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(TABLE_ENDPOINT)
+                .url(Endpoint.TABLE_ENDPOINT)
                 .addHeader("Authorization", "Token " + authToken)
                 .build();
 
@@ -203,7 +214,13 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
     private void processTableData(String data) {
         try {
             JSONObject json = new JSONObject(data);
+
+            serverName = json.getString("server_name");
             addressTableCombo = json.getString("address_table_combo");
+
+            prefs.setServerName(serverName);
+            prefs.setAddrTableCombo(addressTableCombo);
+
             runOnUiThread(new DisplayTableInfo(json));
         } catch (JSONException e) {
             Log.d("DEBUG", "Unable to parse table data");
@@ -300,7 +317,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
                 .build();
 
         Request request = new Request.Builder()
-                .url(TABLE_REQUEST_ENDPOINT)
+                .url(Endpoint.TABLE_REQUEST_ENDPOINT)
                 .addHeader("Authorization", "Token " + authToken)
                 .post(formBody)
                 .build();
@@ -359,11 +376,8 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
         restaurantNameText = (TextView) findViewById(R.id.restaurantNameText);
         serverNameText = (TextView) findViewById(R.id.serverNameText);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            restaurantNameText.setText(extras.getString("RESTAURANT_NAME"));
-            serverNameText.setText("Your server is " + extras.getString("SERVER_NAME"));
-        }
+        restaurantNameText.setText(restaurantName);
+        serverNameText.setText("Your server is " + serverName);
 
         tableServiceBtn = findViewById(R.id.tableServiceBtn);
         placeOrderBtn = findViewById(R.id.placeOrderBtn);
@@ -381,6 +395,14 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        final Button viewCheckBtn = (Button) findViewById(R.id.viewCheckBtn);
+        viewCheckBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new NavManager(TableActivity.this).goToViewCheck();
             }
         });
     }

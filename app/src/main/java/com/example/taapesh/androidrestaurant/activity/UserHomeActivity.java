@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.taapesh.androidrestaurant.R;
+import com.example.taapesh.androidrestaurant.util.Endpoint;
 import com.example.taapesh.androidrestaurant.util.NavManager;
 import com.example.taapesh.androidrestaurant.util.NetworkStatus;
 import com.example.taapesh.androidrestaurant.util.PreferencesManager;
@@ -14,11 +15,12 @@ import com.example.taapesh.androidrestaurant.util.ToolbarManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -27,17 +29,13 @@ import okhttp3.Response;
 
 public class UserHomeActivity extends AppCompatActivity {
 
-    private static final String CREATE_TABLE_ENDPOINT = "http://safe-springs-46272.herokuapp.com/create_table/";
-    private static final String TEST_ADDRESS = "1234 Restaurant St.";
-    private static final String TEST_NAME = "Awesome Restaurant";
-    private static final String TEST_TABLE_NUM = "1";
-    private static final String TEST_TABLE_ADDR_COMBO = "1_1234 Restaurant St.";
-
     private NetworkStatus networkStatus;
     private boolean isNetworkAvailable;
 
     private Button startTableBtn;
     private View progressWheel;
+
+    private  PreferencesManager prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +45,8 @@ public class UserHomeActivity extends AppCompatActivity {
         setupWidgets();
 
         networkStatus = new NetworkStatus(this);
+
+        prefs = new PreferencesManager(this);
     }
 
     @Override
@@ -76,36 +76,24 @@ public class UserHomeActivity extends AppCompatActivity {
     }
 
     private void createOrJoinTable() {
-        Request request = null;
         final OkHttpClient client = new OkHttpClient();
-        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-        PreferencesManager prefs = new PreferencesManager(this);
-        String userId = prefs.getIdAsString();
-        String token = prefs.getToken();
+        final String userId = prefs.getIdAsString();
+        final String token = prefs.getToken();
 
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("address_table_combo", TEST_TABLE_ADDR_COMBO);
-            jsonObject.put("restaurant_name", TEST_NAME);
-            jsonObject.put("restaurant_address", TEST_ADDRESS);
-            jsonObject.put("table_number", TEST_TABLE_NUM);
-            jsonObject.put("user_id", userId);
+        RequestBody formBody = new FormBody.Builder()
+                .add("address_table_combo", Endpoint.TEST_TABLE_ADDR_COMBO)
+                .add("restaurant_name", Endpoint.TEST_RESTAURANT_NAME)
+                .add("restaurant_address", Endpoint.TEST_ADDRESS)
+                .add("table_number", Endpoint.TEST_TABLE_NUM)
+                .add("user_id", userId)
+                .build();
 
-            RequestBody requestBody = RequestBody.create(JSON, jsonObject.toString());
-            request = new Request.Builder()
-                    .url(CREATE_TABLE_ENDPOINT)
-                    .post(requestBody)
-                    .addHeader("Authorization", "Token " + token)
-                    .build();
-        } catch (JSONException e) {
-            Log.d("DEBUG", "Unable to create json table data");
-        }
-
-        if (request == null) {
-            onFailedToCreateTable();
-            return;
-        }
+        Request request = new Request.Builder()
+                .url(Endpoint.CREATE_TABLE_ENDPOINT)
+                .post(formBody)
+                .addHeader("Authorization", "Token " + token)
+                .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -131,13 +119,9 @@ public class UserHomeActivity extends AppCompatActivity {
 
     private void onTableCreated(String tableData) {
         // TODO: validate response and do something
-        try {
-            JSONObject json = new JSONObject(tableData);
-            new NavManager(UserHomeActivity.this).goToTable(
-                    json.getString("restaurant_name"), json.getString("server_name"));
-        } catch (JSONException e) {
-            Log.d("DEBUG", "Unable to parse table data");
-        }
+        Log.d("DEBUG", "Table data: " + tableData);
+        prefs.setRestaurantDetails(tableData);
+        new NavManager(UserHomeActivity.this).goToTable();
     }
 
     private void onFailedToCreateTable() {

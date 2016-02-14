@@ -15,4 +15,5 @@ public class ActivityCode {
     public static final int PROFILE_ACTIVITY = 9;
     public static final int EDIT_PROFILE_ACTIVITY = 10;
     public static final int RECEIPTS_ACTIVITY = 11;
+    public static final int FINISH_ACTIVITY = 12;
 }

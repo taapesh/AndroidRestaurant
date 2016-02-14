@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.taapesh.androidrestaurant.R;
+import com.example.taapesh.androidrestaurant.util.Endpoint;
 import com.example.taapesh.androidrestaurant.util.PreferencesManager;
 import com.example.taapesh.androidrestaurant.util.ToolbarManager;
 
@@ -30,8 +31,6 @@ import okhttp3.Response;
 
 public class ServerActivity extends AppCompatActivity {
 
-    private static final HttpUrl SERVER_TABLES_ENDPOINT =
-            HttpUrl.parse("http://safe-springs-46272.herokuapp.com/server_tables/");
     private static final String PUBLISH_KEY = "pub-c-2344ebc7-3daf-4ffd-8c58-a8f809e85a2e";
     private static final String SUBSCRIBE_KEY = "sub-c-01429274-6938-11e5-a5be-02ee2ddab7fe";
     private static final int MAX_TABLES = 3;
@@ -79,7 +78,7 @@ public class ServerActivity extends AppCompatActivity {
         final OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(SERVER_TABLES_ENDPOINT)
+                .url(Endpoint.SERVER_TABLES_ENDPOINT)
                 .addHeader("Authorization", "Token " + authToken)
                 .build();
 

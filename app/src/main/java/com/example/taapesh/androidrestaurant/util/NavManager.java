@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.example.taapesh.androidrestaurant.activity.AddPaymentActivity;
 import com.example.taapesh.androidrestaurant.activity.EditProfileActivity;
+import com.example.taapesh.androidrestaurant.activity.FinishAndPayActivity;
 import com.example.taapesh.androidrestaurant.activity.PaymentActivity;
 import com.example.taapesh.androidrestaurant.activity.ProfileActivity;
 import com.example.taapesh.androidrestaurant.activity.ReceiptsActivity;
@@ -50,6 +51,9 @@ public class NavManager {
                 break;
             case ActivityCode.PAYMENT_ACTIVITY:
                 nextActivity = new Intent(previousActivity, UserHomeActivity.class);
+                break;
+            case ActivityCode.FINISH_ACTIVITY:
+                nextActivity = new Intent(previousActivity, TableActivity.class);
                 break;
             case ActivityCode.USER_HOME_ACTIVITY:
                 // Exit app
@@ -105,10 +109,8 @@ public class NavManager {
         previousActivity.finish();
     }
 
-    public void goToTable(String restaurantName, String serverName) {
-        Intent nextActivity = new Intent(previousActivity, TableActivity.class);
-        nextActivity.putExtra("RESTAURANT_NAME", restaurantName);
-        nextActivity.putExtra("SERVER_NAME", serverName);
+    public void goToViewCheck() {
+        Intent nextActivity = new Intent(previousActivity, FinishAndPayActivity.class);
         previousActivity.startActivity(nextActivity);
         previousActivity.finish();
     }

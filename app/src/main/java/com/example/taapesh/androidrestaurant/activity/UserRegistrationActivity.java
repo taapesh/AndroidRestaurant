@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.taapesh.androidrestaurant.util.ActivityCode;
+import com.example.taapesh.androidrestaurant.util.Endpoint;
 import com.example.taapesh.androidrestaurant.util.NavManager;
 import com.example.taapesh.androidrestaurant.util.PreferencesManager;
 import com.example.taapesh.androidrestaurant.R;
@@ -29,16 +30,10 @@ import okhttp3.Response;
 
 public class UserRegistrationActivity extends AppCompatActivity {
 
-    private static final String REGISTER_ENDPOINT = "http://safe-springs-46272.herokuapp.com/register/";
     private static EditText firstNameField;
     private static EditText lastNameField;
     private static EditText emailField;
     private static EditText passwordField;
-
-    private static final String TEST_EMAIL = "test@gmail.com";
-    private static final String TEST_PASSWORD = "12345";
-    private static final String TEST_FIRST_NAME = "John";
-    private static final String TEST_LAST_NAME = "Doe";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +58,11 @@ public class UserRegistrationActivity extends AppCompatActivity {
                 String email = emailField.getText().toString();
                 String password = passwordField.getText().toString();
 
-                tryRegister(TEST_EMAIL, TEST_PASSWORD, TEST_FIRST_NAME, TEST_LAST_NAME);
+                tryRegister(
+                        Endpoint.TEST_EMAIL_REGISTER,
+                        Endpoint.TEST_PASSWORD_REGISTER,
+                        Endpoint.TEST_FIRST_NAME,
+                        Endpoint.TEST_LAST_NAME);
             }
         });
     }
@@ -78,7 +77,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url(REGISTER_ENDPOINT)
+                .url(Endpoint.REGISTER_ENDPOINT)
                 .post(formBody)
                 .build();
 

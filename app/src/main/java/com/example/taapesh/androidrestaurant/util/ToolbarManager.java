@@ -26,6 +26,7 @@ public class ToolbarManager {
     public static final String ADD_PAYMENT_ACTIVITY_TITLE = "Add Payment";
     public static final String TABLE_ACTIVITY_TITLE = "Dining";
     public static final String SERVER_ACTIVITY_TITLE = "Serving";
+    public static final String FINISH_ACTIVITY_TITLE = "Viewing Bill";
 
     private AppCompatActivity activity;
     private Toolbar toolbar;
