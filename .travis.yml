@@ -16,7 +16,16 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
 
+    # Emulator for tests
+    - sys-img-armeabi-v7a-android-18
+
 jdk: oraclejdk8
 
+before_script:
+  - echo no | android create avd --force --name test --target $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+
 script:
-   - ./gradlew build connectedCheck
+  - android-wait-for-emulator
+  - adb devices
+  - ./gradlew build connectedCheck
