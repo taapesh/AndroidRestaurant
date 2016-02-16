@@ -1,18 +1,9 @@
 package com.taapesh.tablemate.activity;
 
+import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-
-import com.taapesh.tablemate.R;
-import com.taapesh.tablemate.util.ActivityCode;
-import com.taapesh.tablemate.util.Endpoint;
-import com.taapesh.tablemate.util.PreferencesManager;
-import com.taapesh.tablemate.util.ToolbarManager;
-import com.taapesh.tablemate.util.UnlockBar;
-import com.taapesh.tablemate.util.UnlockBar.OnUnlockListener;
-import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.io.IOException;
 
@@ -24,9 +15,19 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import com.taapesh.tablemate.util.ActivityCode;
+import com.taapesh.tablemate.util.Endpoints;
+import com.taapesh.tablemate.util.PreferencesManager;
+import com.taapesh.tablemate.util.ToolbarManager;
+import com.taapesh.tablemate.util.UnlockBar;
+import com.taapesh.tablemate.util.UnlockBar.OnUnlockListener;
+import com.pnikosis.materialishprogress.ProgressWheel;
+
+import com.taapesh.tablemate.R;
+
 
 public class FinishAndPayActivity extends AppCompatActivity {
-
+    private static final String TAG = "FinishAndPayActivity";
     private UnlockBar unlock;
     private ProgressWheel progressWheel;
     private View sliderThumb;
@@ -87,7 +88,7 @@ public class FinishAndPayActivity extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url(Endpoint.FINISH_ENDPOINT)
+                .url(Endpoints.FINISH_ENDPOINT)
                 .post(formBody)
                 .addHeader("Authorization", "Token " + token)
                 .build();
@@ -102,15 +103,15 @@ public class FinishAndPayActivity extends AppCompatActivity {
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     if (response.code() == 404) {
-                        Log.d("DEBUG", "404 Not Found: Table does not exist");
+                        Log.d(TAG, "404 Not Found: Table does not exist");
                     } else if (response.code() == 409) {
-                        Log.d("DEBUG", "409 Conflict: Payment failed");
+                        Log.d(TAG, "409 Conflict: Payment failed");
                     } else {
                         throw new IOException("Unexpected code " + response);
                     }
                     onPaymentFailed();
                 } else {
-                    Log.d("DEBUG", "Payment success");
+                    Log.d(TAG, "Payment success");
                     onPaymentSuccessful();
                 }
             }
@@ -135,7 +136,7 @@ public class FinishAndPayActivity extends AppCompatActivity {
         sliderThumb.setVisibility(View.VISIBLE);
         unlock.showLabel();
 
-        Log.d("DEBUG", "Payment failed");
+        Log.d(TAG, "Payment failed");
         // TODO: Display payment error
     }
 }

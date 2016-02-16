@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.taapesh.tablemate.R;
 import com.taapesh.tablemate.util.NavManager;
 import com.taapesh.tablemate.util.ToolbarManager;
 
+import com.taapesh.tablemate.R;
+
 
 public class ServerHomeActivity extends AppCompatActivity {
+    private static final String TAG = "ServerHomeActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

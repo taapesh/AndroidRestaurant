@@ -1,16 +1,19 @@
 package com.taapesh.tablemate.activity;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.taapesh.tablemate.R;
 import com.taapesh.tablemate.util.NavManager;
 import com.taapesh.tablemate.util.PreferencesManager;
 
+import com.taapesh.tablemate.R;
 
-public class StartActivity extends Activity {
+
+public class StartActivity extends AppCompatActivity {
+    private static final String TAG = "StartActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         PreferencesManager prefs = new PreferencesManager(this);

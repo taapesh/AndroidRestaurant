@@ -1,17 +1,10 @@
 package com.taapesh.tablemate.activity;
 
+import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
-import com.taapesh.tablemate.R;
-import com.taapesh.tablemate.util.Endpoint;
-import com.taapesh.tablemate.util.NavManager;
-import com.taapesh.tablemate.util.NetworkStatus;
-import com.taapesh.tablemate.util.PreferencesManager;
-import com.taapesh.tablemate.util.ToolbarManager;
 
 import java.io.IOException;
 
@@ -23,9 +16,17 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import com.taapesh.tablemate.util.Endpoints;
+import com.taapesh.tablemate.util.NavManager;
+import com.taapesh.tablemate.util.NetworkStatus;
+import com.taapesh.tablemate.util.PreferencesManager;
+import com.taapesh.tablemate.util.ToolbarManager;
+
+import com.taapesh.tablemate.R;
+
 
 public class UserHomeActivity extends AppCompatActivity {
-
+    private static final String TAG = "UserHomeActivity";
     private NetworkStatus networkStatus;
     private boolean isNetworkAvailable;
 
@@ -52,7 +53,7 @@ public class UserHomeActivity extends AppCompatActivity {
 
         isNetworkAvailable = networkStatus.isOnline();
         if (!isNetworkAvailable) {
-            Log.d("DEBUG", "No network available");
+            Log.d(TAG, "No network available");
         }
     }
 
@@ -79,15 +80,15 @@ public class UserHomeActivity extends AppCompatActivity {
         final String token = prefs.getToken();
 
         RequestBody formBody = new FormBody.Builder()
-                .add("address_table_combo", Endpoint.TEST_TABLE_ADDR_COMBO)
-                .add("restaurant_name", Endpoint.TEST_RESTAURANT_NAME)
-                .add("restaurant_address", Endpoint.TEST_ADDRESS)
-                .add("table_number", Endpoint.TEST_TABLE_NUM)
+                .add("address_table_combo", Endpoints.TEST_TABLE_ADDR_COMBO)
+                .add("restaurant_name", Endpoints.TEST_RESTAURANT_NAME)
+                .add("restaurant_address", Endpoints.TEST_ADDRESS)
+                .add("table_number", Endpoints.TEST_TABLE_NUM)
                 .add("user_id", userId)
                 .build();
 
         Request request = new Request.Builder()
-                .url(Endpoint.CREATE_TABLE_ENDPOINT)
+                .url(Endpoints.CREATE_TABLE_ENDPOINT)
                 .post(formBody)
                 .addHeader("Authorization", "Token " + token)
                 .build();
@@ -102,7 +103,7 @@ public class UserHomeActivity extends AppCompatActivity {
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     if (response.code() == 409) {
-                        Log.d("DEBUG", "409 Conflict: Unable to create table");
+                        Log.d(TAG, "409 Conflict: Unable to create table");
                     } else {
                         throw new IOException("Unexpected code " + response);
                     }

@@ -1,32 +1,22 @@
 package com.taapesh.tablemate.activity;
 
+import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.IntentFilter;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.taapesh.tablemate.R;
-import com.taapesh.tablemate.util.Endpoint;
-import com.taapesh.tablemate.util.NavManager;
-import com.taapesh.tablemate.util.NetworkStateReceiver;
-import com.taapesh.tablemate.util.NetworkStateReceiver.NetworkStateReceiverListener;
-import com.taapesh.tablemate.util.NetworkStatus;
-import com.taapesh.tablemate.util.PreferencesManager;
-import com.taapesh.tablemate.util.ToolbarManager;
-
-import com.pubnub.api.Pubnub;
-import com.pubnub.api.PubnubError;
-import com.pubnub.api.PubnubException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
+import com.pubnub.api.Pubnub;
+import com.pubnub.api.PubnubError;
+import com.pubnub.api.PubnubException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -36,17 +26,26 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import com.taapesh.tablemate.util.Constants;
+import com.taapesh.tablemate.util.Endpoints;
+import com.taapesh.tablemate.util.NavManager;
+import com.taapesh.tablemate.util.NetworkStateReceiver;
+import com.taapesh.tablemate.util.NetworkStateReceiver.NetworkStateReceiverListener;
+import com.taapesh.tablemate.util.NetworkStatus;
+import com.taapesh.tablemate.util.PreferencesManager;
+import com.taapesh.tablemate.util.ToolbarManager;
+
+import com.taapesh.tablemate.R;
+
 
 public class TableActivity extends AppCompatActivity implements NetworkStateReceiverListener {
-
+    private static final String TAG = "TableActivity";
     private static final int TABLE_REQUEST_CODE = 1;
     private static final int TABLE_SERVICE_CODE = 2;
 
     private static final String SERVICE_REQUESTED_TEXT = "Requested";
     private static final String REQUEST_SERVICE_TEXT = "Table Service";
 
-    private static final String PUBLISH_KEY = "pub-c-2344ebc7-3daf-4ffd-8c58-a8f809e85a2e";
-    private static final String SUBSCRIBE_KEY = "sub-c-01429274-6938-11e5-a5be-02ee2ddab7fe";
     private Pubnub pubnub;
 
     // From shared preferences
@@ -109,7 +108,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
 
         setupWidgets();
 
-        pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);
+        pubnub = new Pubnub(Constants.PUBLISH_KEY, Constants.SUBSCRIBE_KEY);
 
         networkStatus = new NetworkStatus(this);
         networkStateReceiver = new NetworkStateReceiver(this);
@@ -120,7 +119,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
         final OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(Endpoint.SERVER_ID_ENDPOINT)
+                .url(Endpoints.SERVER_ID_ENDPOINT)
                 .addHeader("Authorization", "Token " + authToken)
                 .build();
 
@@ -141,7 +140,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
                         Log.d("TABLE_ACTIVITY", "Server id obtained");
                         connectWithServer();
                     } catch (JSONException e) {
-                        Log.d("DEBUG", "Unable to parse server id");
+                        Log.d(TAG, "Unable to parse server id");
                     }
                 }
             }
@@ -165,7 +164,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
                         msg = new JSONObject(message.toString());
                         processMessage(msg);
                     } catch (JSONException e) {
-                        Log.d("DEBUG", "Could not parse pubnub message");
+                        Log.d(TAG, "Could not parse pubnub message");
                     }
                 }
 
@@ -184,7 +183,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
         final OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(Endpoint.TABLE_ENDPOINT)
+                .url(Endpoints.TABLE_ENDPOINT)
                 .addHeader("Authorization", "Token " + authToken)
                 .build();
 
@@ -198,7 +197,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     if (response.code() == 404) {
-                        Log.d("DEBUG", "Table not found");
+                        Log.d(TAG, "Table not found");
                     } else {
                         throw new IOException("Unexpected code " + response);
                     }
@@ -222,7 +221,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
 
             runOnUiThread(new DisplayTableInfo(json));
         } catch (JSONException e) {
-            Log.d("DEBUG", "Unable to parse table data");
+            Log.d(TAG, "Unable to parse table data");
         }
     }
 
@@ -253,7 +252,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
                 runOnUiThread(new UnhideButtons());
                 Log.d("TABLE_ACTIVITY", "Updated table view");
             } catch (JSONException e) {
-                Log.d("DEBUG", "Could not read table data");
+                Log.d(TAG, "Could not read table data");
             }
         }
     }
@@ -278,11 +277,11 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
                     break;
 
                 default:
-                    Log.d("DEBUG", "Unknown code");
+                    Log.d(TAG, "Unknown code");
                     break;
             }
         } catch (JSONException e) {
-            Log.d("DEBUG", "Unable to parse pubnub message");
+            Log.d(TAG, "Unable to parse pubnub message");
         }
     }
 
@@ -316,7 +315,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
                 .build();
 
         Request request = new Request.Builder()
-                .url(Endpoint.TABLE_REQUEST_ENDPOINT)
+                .url(Endpoints.TABLE_REQUEST_ENDPOINT)
                 .addHeader("Authorization", "Token " + authToken)
                 .post(formBody)
                 .build();
@@ -331,12 +330,12 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     if (response.code() == 409) {
-                        Log.d("DEBUG", "Table request already made");
+                        Log.d(TAG, "Table request already made");
                     } else {
                         throw new IOException("Unexpected code " + response);
                     }
                 } else {
-                    Log.d("DEBUG", "Table request made");
+                    Log.d(TAG, "Table request made");
                     onRequestSuccessful();
                 }
             }
@@ -358,13 +357,13 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
                     System.out.println(response.toString());
                 }
                 public void errorCallback(String channel, PubnubError error) {
-                    Log.d("DEBUG", "Failed to send pubnub table request message");
+                    Log.d(TAG, "Failed to send pubnub table request message");
                 }
             };
 
             pubnub.publish(serverId, data, callback);
         } catch (JSONException e) {
-            Log.d("DEBUG", "Failed to create request data for pubnub");
+            Log.d(TAG, "Failed to create request data for pubnub");
         }
     }
 
@@ -433,7 +432,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
     @Override
     public void onNetworkAvailable() {
         if (noNetworkDialog != null) {
-            Log.d("DEBUG", "Network now available");
+            Log.d(TAG, "Network now available");
             noNetworkDialog.dismiss();
             noNetworkDialog = null;
             getActiveTable();
@@ -442,7 +441,7 @@ public class TableActivity extends AppCompatActivity implements NetworkStateRece
 
     @Override
     public void onNetworkUnavailable() {
-        Log.d("DEBUG", "No network is available");
+        Log.d(TAG, "No network is available");
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("NO NETWORK AVAILABLE");
         alertDialogBuilder.setMessage("There was some trouble connecting").setCancelable(false);

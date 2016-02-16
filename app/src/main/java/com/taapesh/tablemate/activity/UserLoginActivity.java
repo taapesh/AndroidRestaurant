@@ -9,13 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.text.Html;
 
-import com.taapesh.tablemate.R;
-import com.taapesh.tablemate.util.ActivityCode;
-import com.taapesh.tablemate.util.Endpoint;
-import com.taapesh.tablemate.util.NavManager;
-import com.taapesh.tablemate.util.PreferencesManager;
-import com.taapesh.tablemate.util.ToolbarManager;
-
 import org.json.JSONObject;
 import org.json.JSONException;
 import java.io.IOException;
@@ -28,9 +21,17 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import com.taapesh.tablemate.util.ActivityCode;
+import com.taapesh.tablemate.util.Endpoints;
+import com.taapesh.tablemate.util.NavManager;
+import com.taapesh.tablemate.util.PreferencesManager;
+import com.taapesh.tablemate.util.ToolbarManager;
+
+import com.taapesh.tablemate.R;
+
 
 public class UserLoginActivity extends AppCompatActivity {
-
+    private static final String TAG = "UserLoginActivity";
     private static EditText loginEmailField;
     private static EditText loginPasswordField;
 
@@ -54,7 +55,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 String password = loginPasswordField.getText().toString();
 
                 // Attempt login
-                tryLogin(Endpoint.TEST_EMAIL, Endpoint.TEST_PASSWORD);
+                tryLogin(Endpoints.TEST_EMAIL, Endpoints.TEST_PASSWORD);
             }
         });
 
@@ -79,7 +80,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url(Endpoint.LOGIN_ENDPOINT)
+                .url(Endpoints.LOGIN_ENDPOINT)
                 .post(formBody)
                 .build();
 
@@ -93,7 +94,7 @@ public class UserLoginActivity extends AppCompatActivity {
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     if (response.code() == 404) {
-                        Log.d("DEBUG", "Unable to log in");
+                        Log.d(TAG, "Unable to log in");
                     } else {
                         throw new IOException("Unexpected code " + response);
                     }
@@ -104,7 +105,7 @@ public class UserLoginActivity extends AppCompatActivity {
                         new PreferencesManager(UserLoginActivity.this).setUserDetails(userDetails);
                         new NavManager(UserLoginActivity.this).goToUserHome();
                     } catch (JSONException e) {
-                        Log.d("DEBUG", "Unable to parse user info");
+                        Log.d(TAG, "Unable to parse user info");
                     }
                 }
             }

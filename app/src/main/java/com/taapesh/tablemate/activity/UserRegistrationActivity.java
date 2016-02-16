@@ -1,19 +1,12 @@
 package com.taapesh.tablemate.activity;
 
+import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.taapesh.tablemate.R;
-import com.taapesh.tablemate.util.ActivityCode;
-import com.taapesh.tablemate.util.Endpoint;
-import com.taapesh.tablemate.util.NavManager;
-import com.taapesh.tablemate.util.PreferencesManager;
-import com.taapesh.tablemate.util.ToolbarManager;
 
 import org.json.JSONObject;
 import org.json.JSONException;
@@ -27,9 +20,17 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import com.taapesh.tablemate.util.ActivityCode;
+import com.taapesh.tablemate.util.Endpoints;
+import com.taapesh.tablemate.util.NavManager;
+import com.taapesh.tablemate.util.PreferencesManager;
+import com.taapesh.tablemate.util.ToolbarManager;
+
+import com.taapesh.tablemate.R;
+
 
 public class UserRegistrationActivity extends AppCompatActivity {
-
+    private static final String TAG = "UserRegisterActivity";
     private static EditText firstNameField;
     private static EditText lastNameField;
     private static EditText emailField;
@@ -59,10 +60,10 @@ public class UserRegistrationActivity extends AppCompatActivity {
                 String password = passwordField.getText().toString();
 
                 tryRegister(
-                        Endpoint.TEST_EMAIL_REGISTER,
-                        Endpoint.TEST_PASSWORD_REGISTER,
-                        Endpoint.TEST_FIRST_NAME,
-                        Endpoint.TEST_LAST_NAME);
+                        Endpoints.TEST_EMAIL_REGISTER,
+                        Endpoints.TEST_PASSWORD_REGISTER,
+                        Endpoints.TEST_FIRST_NAME,
+                        Endpoints.TEST_LAST_NAME);
             }
         });
     }
@@ -77,7 +78,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url(Endpoint.REGISTER_ENDPOINT)
+                .url(Endpoints.REGISTER_ENDPOINT)
                 .post(formBody)
                 .build();
 
@@ -110,7 +111,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
                     new PreferencesManager(UserRegistrationActivity.this).setUserDetails(userDetails);
                     new NavManager(UserRegistrationActivity.this).goToUserHome();
                 } catch (JSONException e) {
-                    Log.d("DEBUG", "Unable to parse user info");
+                    Log.d(TAG, "Unable to parse user info");
                 }
             }
         });

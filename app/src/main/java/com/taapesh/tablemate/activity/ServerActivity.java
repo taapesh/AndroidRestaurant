@@ -7,38 +7,37 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.taapesh.tablemate.R;
-import com.taapesh.tablemate.util.Endpoint;
-import com.taapesh.tablemate.util.PreferencesManager;
-import com.taapesh.tablemate.util.ToolbarManager;
+import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 import com.pubnub.api.Pubnub;
 import com.pubnub.api.Callback;
 import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
-import java.io.IOException;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONException;
-
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import com.taapesh.tablemate.util.Constants;
+import com.taapesh.tablemate.util.Endpoints;
+import com.taapesh.tablemate.util.PreferencesManager;
+import com.taapesh.tablemate.util.ToolbarManager;
+
+import com.taapesh.tablemate.R;
+
 
 public class ServerActivity extends AppCompatActivity {
-
-    private static final String PUBLISH_KEY = "pub-c-2344ebc7-3daf-4ffd-8c58-a8f809e85a2e";
-    private static final String SUBSCRIBE_KEY = "sub-c-01429274-6938-11e5-a5be-02ee2ddab7fe";
-    private static final int MAX_TABLES = 3;
+    private static final String TAG = "ServerActivity";
 
     private String serverId;
     private Pubnub pubnub;
     private String authToken;
 
-    private LinearLayout[] tableViews = new LinearLayout[MAX_TABLES];
+    private LinearLayout[] tableViews = new LinearLayout[Constants.MAX_TABLES];
 
     @Override
     protected void onResume() {
@@ -55,10 +54,10 @@ public class ServerActivity extends AppCompatActivity {
         initUserInfo();
 
         final LinearLayout serverTablesRoot = (LinearLayout) findViewById(R.id.serverTablesRoot);
-        for (int i = 0; i < MAX_TABLES; i++) {
+        for (int i = 0; i < Constants.MAX_TABLES; i++) {
             tableViews[i] = (LinearLayout) serverTablesRoot.getChildAt(i);
         }
-        pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);
+        pubnub = new Pubnub(Constants.PUBLISH_KEY, Constants.SUBSCRIBE_KEY);
     }
 
     @Override
@@ -77,7 +76,7 @@ public class ServerActivity extends AppCompatActivity {
         final OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(Endpoint.SERVER_TABLES_ENDPOINT)
+                .url(Endpoints.SERVER_TABLES_ENDPOINT)
                 .addHeader("Authorization", "Token " + authToken)
                 .build();
 
@@ -96,7 +95,7 @@ public class ServerActivity extends AppCompatActivity {
                     JSONArray json = new JSONArray(response.body().string());
                     runOnUiThread(new DisplayTables(json));
                 } catch (JSONException e) {
-                    Log.d("DEBUG", "Unable to parse table data");
+                    Log.d(TAG, "Unable to parse table data");
                 }
             }
         });
@@ -118,7 +117,7 @@ public class ServerActivity extends AppCompatActivity {
                     TextView tableTitle = (TextView) tableViews[i].getChildAt(0);
                     tableTitle.setText(table.getString("party_size") + " tablemates");
                 } catch (JSONException e) {
-                    Log.d("DEBUG", "Unable to read table data");
+                    Log.d(TAG, "Unable to read table data");
                 }
             }
         }
@@ -135,7 +134,7 @@ public class ServerActivity extends AppCompatActivity {
                         runOnUiThread(new MakeToast(msg.toString()));
                     }
                     catch (JSONException e) {
-                        Log.d("DEBUG", "Unable to parse pubnub message");
+                        Log.d(TAG, "Unable to parse pubnub message");
                     }
                 }
 
@@ -150,7 +149,7 @@ public class ServerActivity extends AppCompatActivity {
     }
 
     private void processMessage(JSONObject msg) {
-        Log.d("DEBUG", msg.toString());
+        Log.d(TAG, msg.toString());
     }
 
     class MakeToast implements Runnable {
