@@ -8,10 +8,10 @@
     {
       "client_info": {
         "mobilesdk_app_id": "1:159290410117:android:c2c5a25bb1ea468c",
-        "client_id": "android:com.example.taapesh.androidrestaurant.activity",
+        "client_id": "android:com.taapesh.tablemate.activity",
         "client_type": 1,
         "android_client_info": {
-          "package_name": "com.example.taapesh.androidrestaurant.activity"
+          "package_name": "com.taapesh.tablemate.activity"
         }
       },
       "oauth_client": [],
@@ -39,10 +39,10 @@
     {
       "client_info": {
         "mobilesdk_app_id": "1:159290410117:android:d2fd05222ec23b9a",
-        "client_id": "android:com.example.taapesh.androidrestaurant",
+        "client_id": "android:com.taapesh.tablemate",
         "client_type": 1,
         "android_client_info": {
-          "package_name": "com.example.taapesh.androidrestaurant"
+          "package_name": "com.taapesh.tablemate"
         }
       },
       "oauth_client": [],

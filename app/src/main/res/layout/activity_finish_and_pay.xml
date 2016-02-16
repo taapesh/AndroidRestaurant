@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar">
 
-        <com.example.taapesh.androidrestaurant.util.UnlockBar
+        <com.taapesh.tablemate.util.UnlockBar
             android:id="@+id/unlock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.taapesh.androidrestaurant" >
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.taapesh.tablemate" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".activity.StartActivity"
+            android:name="com.taapesh.tablemate.activity.StartActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,87 +21,87 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.UserHomeActivity"
+            android:name="com.taapesh.tablemate.activity.UserHomeActivity"
             android:label="@string/placeholder" >
         </activity>
         <activity
-            android:name=".activity.ServerHomeActivity"
+            android:name="com.taapesh.tablemate.activity.ServerHomeActivity"
             android:label="@string/placeholder" >
         </activity>
         <activity
-            android:name=".activity.TableActivity"
+            android:name="com.taapesh.tablemate.activity.TableActivity"
             android:label="@string/placeholder" >
         </activity>
         <activity
-            android:name=".activity.UserLoginActivity"
+            android:name="com.taapesh.tablemate.activity.UserLoginActivity"
             android:label="@string/placeholder"
             android:noHistory="true"
-            android:parentActivityName=".activity.StartActivity" >
+            android:parentActivityName="com.taapesh.tablemate.activity.StartActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.StartActivity" />
+                android:value="com.taapesh.tablemate.activity.StartActivity" />
         </activity>
         <activity
-            android:name=".activity.UserRegistrationActivity"
+            android:name="com.taapesh.tablemate.activity.UserRegistrationActivity"
             android:label="@string/placeholder"
             android:noHistory="true"
-            android:parentActivityName=".activity.StartActivity"
+            android:parentActivityName="com.taapesh.tablemate.activity.StartActivity"
             android:windowSoftInputMode="adjustResize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.StartActivity" />
+                android:value="com.taapesh.tablemate.activity.StartActivity" />
         </activity>
         <activity
-            android:name=".activity.ServerActivity"
+            android:name="com.taapesh.tablemate.activity.ServerActivity"
             android:label="@string/placeholder" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.UserLoginActivity" />
+                android:value="com.taapesh.tablemate.activity.UserLoginActivity" />
         </activity>
         <activity
-            android:name=".activity.ProfileActivity"
+            android:name="com.taapesh.tablemate.activity.ProfileActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".activity.UserHomeActivity" >
+            android:parentActivityName="com.taapesh.tablemate.activity.UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.UserHomeActivity" />
+                android:value="com.taapesh.tablemate.activity.UserHomeActivity" />
         </activity>
         <activity
-            android:name=".activity.ReceiptsActivity"
+            android:name="com.taapesh.tablemate.activity.ReceiptsActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".activity.UserHomeActivity" >
+            android:parentActivityName="com.taapesh.tablemate.activity.UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.UserHomeActivity" />
+                android:value="com.taapesh.tablemate.activity.UserHomeActivity" />
         </activity>
         <activity
-            android:name=".activity.PaymentActivity"
+            android:name="com.taapesh.tablemate.activity.PaymentActivity"
             android:label="@string/placeholder"
-            android:parentActivityName=".activity.UserHomeActivity" >
+            android:parentActivityName="com.taapesh.tablemate.activity.UserHomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.UserHomeActivity" />
+                android:value="com.taapesh.tablemate.activity.UserHomeActivity" />
         </activity>
         <activity
-            android:name=".activity.AddPaymentActivity"
-            android:label="@string/placeholder"
-            android:noHistory="true"
-            android:parentActivityName=".activity.PaymentActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.PaymentActivity" />
-        </activity>
-        <activity
-            android:name=".activity.EditProfileActivity"
+            android:name="com.taapesh.tablemate.activity.AddPaymentActivity"
             android:label="@string/placeholder"
             android:noHistory="true"
-            android:parentActivityName=".activity.ProfileActivity" >
+            android:parentActivityName="com.taapesh.tablemate.activity.PaymentActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ProfileActivity" />
+                android:value="com.taapesh.tablemate.activity.PaymentActivity" />
         </activity>
         <activity
-            android:name=".activity.FinishAndPayActivity"
+            android:name="com.taapesh.tablemate.activity.EditProfileActivity"
+            android:label="@string/placeholder"
+            android:noHistory="true"
+            android:parentActivityName="com.taapesh.tablemate.activity.ProfileActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.taapesh.tablemate.activity.ProfileActivity" />
+        </activity>
+        <activity
+            android:name="com.taapesh.tablemate.activity.FinishAndPayActivity"
             android:label="@string/title_activity_finish_and_pay" >
         </activity>
     </application>
